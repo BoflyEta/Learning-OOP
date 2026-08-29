@@ -316,7 +316,7 @@
   <header class="hero">
     <div class="eyebrow">Sheet 01 &middot; Materi Detail</div>
     <h1 class="title">Objek Pertamamu</h1>
-    <p class="subtitle">Kenapa sih kita butuh OOP, dan gimana caranya JavaScript ngebungkus data plus perilaku jadi satu hal yang namanya <em>objek</em>.</p>
+    <p class="subtitle">Mengapa kita membutuhkan OOP dan bagaimana JavaScript menggabungkan data serta perilaku ke dalam satu kesatuan yang disebut <em>objek</em>.</p>
     <div class="meta-row">
       <span><strong>Durasi:</strong> 120 menit</span>
       <span><strong>Prasyarat:</strong> variabel, function, array</span>
@@ -334,9 +334,9 @@
       </label>
     </div>
     <div class="prose">
-      <p>Coba bayangin kamu baru pindah rumah. Di garasi ada obeng, paku, kaleng cat, sama meteran — berantakan semua numpuk di lantai. Tiap kali mau kerja, kamu harus inget-inget sendiri: <em>"cat warna biru itu punya siapa ya, sisa berapa liter, obeng mana yang masih bagus."</em> Nggak ada yang ngumpulin barang-barang itu jadi satu tempat.</p>
-      <p>Nah, itu persis yang kejadian di kode <strong>procedural</strong> begitu aplikasinya mulai gede: banyak variabel lepas yang sebenarnya "punya" satu hal yang sama, tapi ditulis kepisah-pisah. Lihat dulu deh contohnya di bawah — coba jalankan, terus bayangin kalau bukan 2 buku, tapi 50 buku.</p>
-      <p>Nama kerennya <strong>Object-Oriented Programming</strong> (OOP), atau dalam Bahasa Indonesia <strong>Pemrograman Berorientasi Objek</strong>. Intinya gampang kok: daripada nambah variabel baru tiap kali ada data baru, kita tinggal nambah satu <em>objek</em> baru — satu paket rapi yang udah bawa data plus caranya dipakai sekaligus. Coba deh hitung sendiri bedanya: gaya procedural di atas butuh <strong>3 variabel + 1 fungsi per buku</strong>. Buat 2 buku aja udah 6 variabel + 2 fungsi yang isinya nyaris sama persis. Buat 50 buku, jadinya <strong>150 variabel + 50 fungsi</strong> — dan kalau ada satu bug kecil di logika <code>tampilkanInfo</code>, kamu harus benerinnya di 50 tempat berbeda.</p>
+      <p>Bayangkan kamu baru pindah rumah. Di garasi ada obeng, paku, kaleng cat, dan meteran yang menumpuk di lantai. Setiap kali ingin bekerja, kamu harus mengingat semuanya sendiri: <em>"Cat warna biru itu milik siapa? Masih tersisa berapa liter? Obeng mana yang masih bagus?"</em> Tidak ada tempat khusus untuk mengumpulkan barang-barang tersebut.</p>
+      <p>Hal yang sama terjadi pada kode <strong>procedural</strong> ketika aplikasi mulai membesar: banyak variabel terpisah yang sebenarnya berkaitan dengan satu hal, tetapi ditulis di tempat yang berbeda. Lihat contoh di bawah ini, lalu bayangkan jika jumlahnya bukan dua buku, melainkan 50 buku.</p>
+      <p>Inilah yang disebut <strong>Object-Oriented Programming</strong> (OOP), atau <strong>Pemrograman Berorientasi Objek</strong>. Intinya sederhana: daripada menambahkan variabel baru setiap kali ada data baru, kita membuat satu <em>objek</em> baru, yaitu satu paket yang berisi data dan cara mengolahnya. Perhatikan perbedaannya: gaya procedural di atas membutuhkan <strong>3 variabel + 1 fungsi untuk setiap buku</strong>. Dua buku saja membutuhkan 6 variabel + 2 fungsi yang hampir sama. Untuk 50 buku, jumlahnya menjadi <strong>150 variabel + 50 fungsi</strong>. Jika ada bug kecil pada logika <code>tampilkanInfo</code>, kamu harus memperbaikinya di 50 tempat berbeda.</p>
     </div>
 
     <div class="tabs">
@@ -347,7 +347,7 @@
       </div>
 
       <div class="tab-panel active" data-panel="before">
-        <p class="tab-note">Tiap ada buku baru, berarti nambah <strong>3 variabel + 1 fungsi baru</strong>. Data yang harusnya nyambung malah tercecer ke mana-mana.</p>
+        <p class="tab-note">Setiap buku baru membutuhkan <strong>3 variabel + 1 fungsi baru</strong>. Data yang seharusnya berkaitan justru tersebar di berbagai tempat.</p>
         <div class="runner">
           <div class="runner-head"><span>sebelum.js</span><button class="run-btn" data-run="r1">Jalankan ▸</button></div>
           <pre class="code-box" id="src-r1">let judulBuku1 = "Laskar Pelangi";
@@ -372,7 +372,7 @@ tampilkanInfoBuku2();</pre>
       </div>
 
       <div class="tab-panel" data-panel="after">
-        <p class="tab-note">Data dan cara nampilinnya jadi <strong>satu paket</strong> dalam satu objek. Nambah buku baru nggak bikin variabel baru yang berserakan.</p>
+        <p class="tab-note">Data dan cara menampilkannya menjadi <strong>satu paket</strong> dalam satu objek. Menambahkan buku baru tidak membuat variabel baru yang tersebar.</p>
         <div class="runner">
           <div class="runner-head"><span>sesudah.js</span><button class="run-btn" data-run="r2">Jalankan ▸</button></div>
           <pre class="code-box" id="src-r2">const buku1 = {
@@ -396,11 +396,11 @@ const buku2 = {
 [buku1, buku2].forEach(b => b.tampilkanInfo());</pre>
           <div class="output-panel" id="out-r2"><span class="output-placeholder">Klik "Jalankan" untuk melihat hasilnya di sini.</span></div>
         </div>
-        <div class="callout"><strong>Jujur aja nih:</strong> method <code>tampilkanInfo()</code> di atas masih harus ditulis ulang di tiap objek. Itu masalah beneran — makanya di Pertemuan 2 kita kenalan sama <code>class</code>, cetak biru yang nulis method itu cukup sekali buat semua objek sejenis.</div>
+        <div class="callout"><strong>Perhatikan:</strong> method <code>tampilkanInfo()</code> di atas masih harus ditulis ulang di setiap objek. Inilah masalah yang akan kita selesaikan pada Pertemuan 2 dengan <code>class</code>, yaitu cetak biru yang memungkinkan method tersebut ditulis sekali untuk semua objek sejenis.</div>
       </div>
 
       <div class="tab-panel" data-panel="motor">
-        <p class="tab-note">Pola yang sama ini berlaku buat data apa pun, bukan cuma buku. Coba bandingin versi procedural sama versi objek buat data motor di bawah ini.</p>
+        <p class="tab-note">Pola yang sama berlaku untuk berbagai jenis data, bukan hanya buku. Bandingkan versi procedural dan versi objek untuk data motor di bawah ini.</p>
         <div class="runner">
           <div class="runner-head"><span>motor-procedural-vs-objek.js</span><button class="run-btn" data-run="r1b">Jalankan ▸</button></div>
           <pre class="code-box" id="src-r1b">// --- gaya procedural ---
@@ -422,7 +422,7 @@ const motor1 = {
 motor1.info();</pre>
           <div class="output-panel" id="out-r1b"><span class="output-placeholder">Klik "Jalankan" untuk melihat hasilnya di sini.</span></div>
         </div>
-        <div class="callout">Hasilnya sama persis, tapi versi objek jauh lebih gampang ditelusuri: mau tahu semua data motor ini? Tinggal lihat satu variabel <code>motor1</code> aja, nggak perlu ngumpulin beberapa variabel lepas satu-satu.</div>
+        <div class="callout">Hasilnya sama, tetapi versi objek lebih mudah ditelusuri. Untuk melihat seluruh data motor, kamu cukup melihat satu variabel <code>motor1</code> tanpa perlu mengumpulkan beberapa variabel terpisah.</div>
       </div>
     </div>
   </section>
@@ -435,28 +435,28 @@ motor1.info();</pre>
       <label class="mark-done" data-progress-item="1"><input type="checkbox"> Sudah paham</label>
     </div>
     <div class="prose">
-      <p>OOP itu berdiri di atas empat gagasan besar. Hari ini kamu cukup <strong>kenalan sama namanya dan analoginya</strong> dulu — tiap pilar bakal dibahas lebih dalam satu-satu di pertemuan-pertemuan berikutnya.</p>
+      <p>OOP dibangun di atas empat gagasan besar. Pada pertemuan ini, kamu cukup <strong>mengenal nama dan analoginya</strong> terlebih dahulu. Setiap pilar akan dibahas lebih mendalam pada pertemuan berikutnya.</p>
     </div>
     <div class="pillar-grid">
       <div class="pillar-card">
         <div class="pillar-tag">Pertemuan 3</div>
         <h4>Encapsulation</h4>
-        <p>Kotak perkakas yang terkunci — orang lain tidak bisa mengubah isinya sembarangan, harus lewat "pintu" yang kamu sediakan.</p>
+        <p>Kotak perkakas yang dikunci: orang lain tidak dapat mengubah isinya sembarangan dan harus melewati "pintu" yang sudah kamu siapkan.</p>
       </div>
       <div class="pillar-card">
         <div class="pillar-tag">Pertemuan 4–5</div>
         <h4>Inheritance</h4>
-        <p>Resep turunan — resep "Kue Dasar" diwariskan ke "Kue Coklat" dan "Kue Keju" tanpa menulis ulang semuanya dari nol.</p>
+        <p>Resep turunan: resep "Kue Dasar" diwariskan kepada "Kue Coklat" dan "Kue Keju", sehingga tidak perlu ditulis ulang dari awal.</p>
       </div>
       <div class="pillar-card">
         <div class="pillar-tag">Pertemuan 6</div>
         <h4>Polymorphism</h4>
-        <p>Perintah "mulai!" pada balapan — mobil melaju, motor melaju, sepeda melaju — sama perintahnya, beda caranya bergerak.</p>
+        <p>Aba-aba "mulai!" dalam balapan: mobil melaju, motor melaju, dan sepeda melaju. Aba-abanya sama, tetapi cara setiap kendaraan bergerak berbeda.</p>
       </div>
       <div class="pillar-card">
         <div class="pillar-tag">Pertemuan 7</div>
         <h4>Abstraction</h4>
-        <p>Tombol power di remote TV — kamu cukup pencet, tanpa perlu tahu rangkaian elektronik di baliknya.</p>
+        <p>Tombol daya pada remote TV: kamu cukup menekannya tanpa perlu mengetahui rangkaian elektronik di baliknya.</p>
       </div>
     </div>
   </section>
@@ -469,9 +469,9 @@ motor1.info();</pre>
       <label class="mark-done" data-progress-item="2"><input type="checkbox"> Sudah paham</label>
     </div>
     <div class="prose">
-      <p>Sekarang coba bayangin semua alat di garasi tadi kamu masukin ke <strong>satu kotak berlabel "Kotak Perkakas"</strong>. Daripada inget belasan nama variabel kepisah-pisah, kamu tinggal inget satu nama aja: kotaknya. Di JavaScript, kotak ini disebut <strong>objek</strong>, dan cara nulisnya kayak gini — pake kurung kurawal <code>{ }</code> — disebut <strong>object literal</strong>.</p>
-      <p>Barang di dalam kotak (data) itu disebut <strong>properti</strong>. Hal yang bisa dilakukan kotak itu (fungsi) disebut <strong>method</strong>. Terus <code>this</code> itu cara si kotak nunjuk ke dirinya sendiri — kayak label kecil di dalam kotak yang tulisannya "isi kotak ini", tanpa perlu nyebut nama kotaknya.</p>
-      <p>Properti nggak harus cuma angka atau teks doang — bisa berisi teks, angka, boolean (benar/salah), bahkan array atau objek lain di dalamnya. Method pun bebas isinya logika apa aja, nggak cuma <code>console.log</code>. Yang bikin ini jadi "OOP" bukan bentuk kurung kurawalnya, tapi <strong>fakta bahwa data dan cara ngolahnya hidup di satu wadah yang sama</strong>.</p>
+      <p>Bayangkan semua alat di garasi tadi dimasukkan ke dalam <strong>satu kotak berlabel "Kotak Perkakas"</strong>. Daripada mengingat banyak nama variabel yang terpisah, kamu cukup mengingat satu nama: kotaknya. Di JavaScript, kotak ini disebut <strong>objek</strong>, sedangkan cara menulisnya menggunakan kurung kurawal <code>{ }</code> disebut <strong>object literal</strong>.</p>
+      <p>Barang di dalam kotak, yaitu data, disebut <strong>properti</strong>. Hal yang dapat dilakukan kotak tersebut, yaitu fungsi, disebut <strong>method</strong>. Sementara itu, <code>this</code> adalah cara objek merujuk kepada dirinya sendiri, seperti label di dalam kotak yang bertuliskan "isi kotak ini" tanpa perlu menyebut nama kotaknya.</p>
+      <p>Properti tidak hanya dapat berisi angka atau teks. Properti juga dapat berisi boolean (benar/salah), array, atau objek lain. Method dapat berisi berbagai logika, tidak hanya <code>console.log</code>. Hal yang membuatnya menjadi bagian dari OOP bukan bentuk kurung kurawalnya, melainkan <strong>data dan cara mengolahnya berada dalam satu wadah yang sama</strong>.</p>
     </div>
     <div class="runner">
       <div class="runner-head"><span>anatomi-objek.js</span><button class="run-btn" data-run="r2b">Jalankan ▸</button></div>
@@ -490,7 +490,7 @@ motor1.info();</pre>
 kotakPerkakas.cekIsi();</pre>
       <div class="output-panel" id="out-r2b"><span class="output-placeholder">Klik "Jalankan" untuk melihat hasilnya di sini.</span></div>
     </div>
-    <p class="tab-note" style="margin-top:16px;">Nih contoh lain, beda domain — tapi konsepnya persis sama: properti buat data, method buat perilaku, <code>this</code> buat nunjuk ke objek itu sendiri.</p>
+    <p class="tab-note" style="margin-top:16px;">Berikut contoh dari domain lain dengan konsep yang sama: properti menyimpan data, method merepresentasikan perilaku, dan <code>this</code> merujuk kepada objek itu sendiri.</p>
     <div class="runner">
       <div class="runner-head"><span>anatomi-objek-2.js</span><button class="run-btn" data-run="r2c">Jalankan ▸</button></div>
       <pre class="code-box" id="src-r2c">const kucing = {
@@ -514,7 +514,7 @@ kucing.bersuara();</pre>
       <label class="mark-done" data-progress-item="3"><input type="checkbox"> Selesai latihan</label>
     </div>
     <div class="prose">
-      <p>Coba lengkapi kode di bawah ini langsung di kotak edit — isi properti buku favoritmu, terus lengkapi method <code>tampilkanInfo()</code> biar bisa nyetak ringkasannya. Pencet <strong>Jalankan</strong> buat nyobain.</p>
+      <p>Lengkapi kode di bawah ini langsung pada kotak edit. Isi properti dengan data buku favoritmu, lalu lengkapi method <code>tampilkanInfo()</code> agar dapat mencetak ringkasannya. Setelah itu, klik <strong>Jalankan</strong> untuk mencobanya.</p>
     </div>
     <div class="runner">
       <div class="runner-head"><span>latihan-buku.js — bisa diedit</span><button class="run-btn" data-run="r3">Jalankan ▸</button></div>
@@ -551,7 +551,7 @@ buku.tampilkanInfo();</pre>
     </div>
 
     <div class="prose" style="margin-top:28px;">
-      <p><strong>Latihan tambahan:</strong> sekarang coba ganti ke domain lain. Lengkapi objek <code>film</code> di bawah — isi properti judul, sutradara, dan tahun rilis film favoritmu, terus lengkapi <code>tampilkanInfo()</code>.</p>
+      <p><strong>Latihan tambahan:</strong> gunakan domain lain. Lengkapi objek <code>film</code> di bawah ini dengan judul, sutradara, dan tahun rilis film favoritmu, lalu lengkapi method <code>tampilkanInfo()</code>.</p>
     </div>
     <div class="runner">
       <div class="runner-head"><span>latihan-film.js — bisa diedit</span><button class="run-btn" data-run="r3b">Jalankan ▸</button></div>
@@ -674,17 +674,17 @@ film.tampilkanInfo();</pre>
     </div>
     <div class="recap-box">
       <ul>
-        <li>Kode <strong>procedural</strong> nyimpen data yang berhubungan sebagai variabel-variabel terpisah — gampang berantakan begitu aplikasinya makin gede (2 buku = 6 variabel + 2 fungsi, 50 buku = 150 variabel + 50 fungsi).</li>
-        <li><strong>Objek</strong> ngebungkus data (properti) dan perilaku (method) jadi satu kesatuan, kayak barang-barang dalam satu kotak berlabel — pola yang sama berlaku buat buku, motor, kucing, film, atau apa pun.</li>
-        <li><code>this</code> di dalam method nunjuk ke objek itu sendiri, nggak peduli objeknya buku, motor, atau kucing.</li>
-        <li>Properti bisa berupa data jenis apa aja (teks, angka, boolean, array); yang bikin sesuatu jadi "objek" adalah data dan perilakunya hidup dalam satu wadah yang sama.</li>
-        <li>Empat pilar OOP — encapsulation, inheritance, polymorphism, abstraction — baru dikenalin sekilas hari ini, bakal didalami satu-satu ke depannya.</li>
+        <li>Kode <strong>procedural</strong> menyimpan data yang saling berhubungan sebagai variabel terpisah, sehingga mudah berantakan ketika aplikasi membesar (2 buku = 6 variabel + 2 fungsi, 50 buku = 150 variabel + 50 fungsi).</li>
+        <li><strong>Objek</strong> menggabungkan data (properti) dan perilaku (method) menjadi satu paket, seperti barang-barang dalam satu kotak berlabel. Pola yang sama berlaku untuk buku, motor, kucing, film, atau objek lainnya.</li>
+        <li><code>this</code> di dalam method merujuk kepada objek itu sendiri, baik objek tersebut berupa buku, motor, maupun kucing.</li>
+        <li>Properti dapat berisi berbagai jenis data (teks, angka, boolean, atau array). Suatu "objek" memiliki data dan perilaku yang berada dalam satu wadah yang sama.</li>
+        <li>Empat pilar OOP — encapsulation, inheritance, polymorphism, dan abstraction — baru diperkenalkan secara singkat pada pertemuan ini dan akan dibahas lebih mendalam pada pertemuan berikutnya.</li>
       </ul>
     </div>
     <div class="next-box">
       <div>
         <div class="lbl">Selanjutnya</div>
-        <p>Di Pertemuan 2, object literal ini bakal kita ubah jadi <strong>class</strong> — cetak biru yang bisa nyetak banyak objek sekaligus, tanpa perlu nulis ulang method satu-satu.</p>
+        <p>Di Pertemuan 2, object literal ini akan kita ubah menjadi <strong>class</strong> — cetak biru yang dapat menghasilkan banyak objek sekaligus tanpa perlu menulis ulang method satu per satu.</p>
       </div>
     </div>
   </section>

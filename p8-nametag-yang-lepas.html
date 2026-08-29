@@ -141,7 +141,7 @@
   <header class="hero">
     <div class="eyebrow">Sheet 08 &middot; Materi Detail</div>
     <h1 class="title">Nametag yang Lepas</h1>
-    <p class="subtitle">Properti <code>static</code> itu punya class-nya, bukan punya instance. Terus <code>this</code> juga bisa "lupa" objek aslinya kalau method-nya dicopot dari tempatnya.</p>
+    <p class="subtitle">Properti <code>static</code> milik class itu sendiri, bukan milik instance. Selain itu, <code>this</code> bisa "kehilangan" objek asalnya jika method dipindahkan dari tempat pemanggilannya.</p>
     <div class="meta-row">
       <span><strong>Durasi:</strong> 120 menit</span>
       <span><strong>Prasyarat:</strong> class &amp; method (Modul 1–2)</span>
@@ -157,7 +157,7 @@
       <label class="mark-done" data-progress-item="0"><input type="checkbox"> Sudah paham</label>
     </div>
     <div class="prose">
-      <p>Biasanya tiap instance punya datanya masing-masing — <code>this.nama</code> itu cuma milik satu objek doang. Tapi kadang kita butuh data yang <strong>dibagi bareng-bareng oleh SEMUA instance</strong>, punya class itu sendiri, bukan punya salah satu produknya. Coba bayangin papan pengumuman di pabrik yang nampilin "Total diproduksi hari ini" — itu bukan stiker yang nempel di satu produk doang, kan?</p>
+      <p>Biasanya, setiap instance memiliki datanya sendiri. Misalnya, <code>this.nama</code> hanya milik satu objek tertentu. Namun, kadang kita membutuhkan data yang <strong>dibagi bersama oleh semua instance</strong> dan dimiliki oleh class itu sendiri, bukan oleh salah satu produknya. Coba bayangkan papan pengumuman di pabrik yang menampilkan "Total produksi hari ini" — itu bukan stiker yang menempel pada satu produk saja, bukan?</p>
     </div>
     <div class="runner">
       <div class="runner-head"><span>static-counter.js</span><button class="run-btn" data-run="r1">Jalankan ▸</button></div>
