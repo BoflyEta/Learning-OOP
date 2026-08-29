@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Objek Pertamamu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF3F1;
+    --surface: #FFFFFF;
+    --surface-2: #E3ECE9;
+    --ink: #142430;
+    --ink-soft: #46606B;
+    --ink-faint: #7C939B;
+    --line: #C3D2CF;
+    --line-strong: #9DB3AF;
+    --accent: #1E5C97;
+    --accent-ink: #ffffff;
+    --accent-soft: #DDEAF6;
+    --accent-2: #A85A25;
+    --accent-2-soft: #F5E2CD;
+    --success: #2E7D46;
+    --success-soft: #DEEFE1;
+    --danger: #B3402C;
+    --danger-soft: #F6DFDA;
+    --grid-line: rgba(20, 36, 48, 0.05);
+    --shadow: 0 1px 2px rgba(20, 36, 48, 0.06), 0 8px 24px rgba(20, 36, 48, 0.05);
+    --code-bg: #0F2233;
+    --code-ink: #DCE8EF;
+    --code-faint: #7C97A6;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0E2233;
+      --surface: #14304A;
+      --surface-2: #0C2032;
+      --ink: #E9F1F6;
+      --ink-soft: #A9C2D1;
+      --ink-faint: #6E8FA0;
+      --line: #2C5271;
+      --line-strong: #3E6D8F;
+      --accent: #74B4EC;
+      --accent-ink: #0A1926;
+      --accent-soft: rgba(116, 180, 236, 0.14);
+      --accent-2: #E7A15F;
+      --accent-2-soft: rgba(231, 161, 95, 0.14);
+      --success: #6FCF8E;
+      --success-soft: rgba(111, 207, 142, 0.14);
+      --danger: #E98A76;
+      --danger-soft: rgba(233, 138, 118, 0.14);
+      --grid-line: rgba(233, 241, 246, 0.05);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+      --code-bg: #081521;
+      --code-ink: #DCE8EF;
+      --code-faint: #5E7987;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0E2233;
+    --surface: #14304A;
+    --surface-2: #0C2032;
+    --ink: #E9F1F6;
+    --ink-soft: #A9C2D1;
+    --ink-faint: #6E8FA0;
+    --line: #2C5271;
+    --line-strong: #3E6D8F;
+    --accent: #74B4EC;
+    --accent-ink: #0A1926;
+    --accent-soft: rgba(116, 180, 236, 0.14);
+    --accent-2: #E7A15F;
+    --accent-2-soft: rgba(231, 161, 95, 0.14);
+    --success: #6FCF8E;
+    --success-soft: rgba(111, 207, 142, 0.14);
+    --danger: #E98A76;
+    --danger-soft: rgba(233, 138, 118, 0.14);
+    --grid-line: rgba(233, 241, 246, 0.05);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+    --code-bg: #081521;
+    --code-ink: #DCE8EF;
+    --code-faint: #5E7987;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  a { color: var(--accent); }
+  code { font-family: var(--font-mono); background: var(--surface-2); padding: 1px 5px; border-radius: 3px; font-size: 0.92em; }
+
+  .page { max-width: 820px; margin: 0 auto; padding: 32px 22px 100px; }
+
+  /* ---------- Breadcrumb + progress ---------- */
+  .crumb {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .crumb a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px dotted var(--ink-faint); }
+  .crumb a:hover { color: var(--accent); border-color: var(--accent); }
+  .crumb .now { color: var(--accent); }
+
+  .progress-shell {
+    margin-top: 18px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow);
+  }
+  .progress-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); white-space: nowrap; }
+  .progress-track { flex: 1; height: 8px; background: var(--surface-2); border: 1px solid var(--line); position: relative; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.35s ease; }
+  .progress-count { font-family: var(--font-mono); font-size: 12px; color: var(--accent); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  /* ---------- Header ---------- */
+  header.hero { margin-top: 30px; margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); display: flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--accent); display: inline-block; }
+  h1.title {
+    font-family: var(--font-display); font-weight: 600; font-size: clamp(32px, 5.4vw, 50px);
+    line-height: 1.06; letter-spacing: -0.01em; margin: 14px 0 12px; text-wrap: balance;
+  }
+  .subtitle { font-size: 16.5px; color: var(--ink-soft); max-width: 62ch; margin: 0; }
+
+  .meta-row { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); }
+  .meta-row strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Sections ---------- */
+  section { margin-top: 56px; }
+  .section-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .section-num {
+    font-family: var(--font-mono); font-size: 12px; color: var(--accent-ink); background: var(--accent);
+    width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  h2.section-title { font-family: var(--font-display); font-weight: 600; font-size: clamp(21px, 3vw, 26px); margin: 0; text-wrap: balance; flex: 1; }
+
+  .mark-done { display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-faint); cursor: pointer; user-select: none; white-space: nowrap; }
+  .mark-done input { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+  .mark-done.is-done { color: var(--success); }
+
+  .prose { font-size: 15.5px; color: var(--ink); max-width: 68ch; }
+  .prose p { margin: 0 0 14px; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { color: var(--ink); }
+
+  .callout {
+    background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 14px 16px; margin: 18px 0;
+    font-size: 14.5px; max-width: 68ch;
+  }
+  .callout strong { color: var(--accent); }
+
+  /* ---------- Tabs (before/after) ---------- */
+  .tabs { border: 1px solid var(--line-strong); background: var(--surface); box-shadow: var(--shadow); margin-top: 20px; }
+  .tab-bar { display: flex; border-bottom: 1px solid var(--line-strong); }
+  .tab-btn {
+    font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--surface-2); color: var(--ink-faint); border: none; border-right: 1px solid var(--line);
+    padding: 12px 18px; cursor: pointer; flex: 1;
+  }
+  .tab-btn.active { background: var(--surface); color: var(--accent); font-weight: 600; }
+  .tab-panel { display: none; padding: 20px; }
+  .tab-panel.active { display: block; }
+  .tab-note { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 14px; }
+  .tab-note strong { color: var(--accent-2); }
+
+  /* ---------- Code blocks + playground ---------- */
+  .code-box { background: var(--code-bg); color: var(--code-ink); font-family: var(--font-mono); font-size: 13px; line-height: 1.6; padding: 16px 18px; overflow-x: auto; white-space: pre; }
+  .code-box .cm { color: var(--code-faint); font-style: italic; }
+
+  .runner { margin-top: 20px; border: 1px solid var(--line-strong); background: var(--surface); box-shadow: var(--shadow); }
+  .runner-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
+  .runner-head span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
+  .run-btn {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.03em;
+    background: var(--accent); color: var(--accent-ink); border: none; padding: 8px 16px; cursor: pointer;
+  }
+  .run-btn:hover { filter: brightness(1.08); }
+  .run-btn:active { transform: translateY(1px); }
+
+  textarea.code-editor {
+    width: 100%; min-height: 200px; background: var(--code-bg); color: var(--code-ink); font-family: var(--font-mono);
+    font-size: 13px; line-height: 1.6; border: none; padding: 16px 18px; resize: vertical; display: block;
+  }
+  textarea.code-editor:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  .output-panel {
+    border-top: 1px solid var(--line); background: var(--surface); padding: 12px 18px; font-family: var(--font-mono);
+    font-size: 13px; min-height: 46px; max-height: 220px; overflow-y: auto;
+  }
+  .output-placeholder { color: var(--ink-faint); font-style: italic; }
+  .out-line { padding: 2px 0; color: var(--ink); }
+  .out-error { color: var(--danger); }
+  .out-warn { color: var(--accent-2); }
+
+  .reveal-btn {
+    font-family: var(--font-mono); font-size: 12px; color: var(--accent); background: none; border: 1px solid var(--accent);
+    padding: 8px 14px; cursor: pointer; margin-top: 16px;
+  }
+  .reveal-btn:hover { background: var(--accent-soft); }
+  .answer-box { display: none; margin-top: 14px; }
+  .answer-box.open { display: block; }
+
+  /* ---------- Pillar cards ---------- */
+  .pillar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line-strong); border: 1px solid var(--line-strong); margin-top: 20px; }
+  @media (max-width: 700px) { .pillar-grid { grid-template-columns: repeat(2, 1fr); } }
+  .pillar-card { background: var(--surface); padding: 18px 16px 20px; }
+  .pillar-tag { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .pillar-card h4 { font-family: var(--font-display); font-size: 16px; margin: 0 0 8px; }
+  .pillar-card p { font-size: 13px; color: var(--ink-soft); margin: 0; }
+
+  /* ---------- Quiz ---------- */
+  .quiz { display: flex; flex-direction: column; gap: 24px; margin-top: 20px; }
+  .quiz-card { background: var(--surface); border: 1px solid var(--line-strong); box-shadow: var(--shadow); padding: 20px; }
+  .quiz-q { font-family: var(--font-display); font-size: 16.5px; font-weight: 600; margin: 0 0 14px; text-wrap: balance; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    text-align: left; font-family: var(--font-body); font-size: 14px; color: var(--ink); background: var(--surface-2);
+    border: 1px solid var(--line); padding: 11px 14px; cursor: pointer;
+  }
+  .quiz-opt:hover { border-color: var(--accent); }
+  .quiz-opt.correct { background: var(--success-soft); border-color: var(--success); color: var(--success); font-weight: 600; }
+  .quiz-opt.incorrect { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
+  .quiz-opt[disabled] { cursor: default; }
+  .quiz-explain { margin-top: 12px; font-size: 13.5px; padding: 10px 12px; border-left: 3px solid var(--accent); background: var(--accent-soft); display: none; }
+  .quiz-explain.show { display: block; }
+  .quiz-explain.ok { border-color: var(--success); background: var(--success-soft); }
+
+  .quiz-score {
+    margin-top: 4px; text-align: center; font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft);
+    border: 1px dashed var(--line-strong); padding: 12px;
+  }
+  .quiz-score strong { color: var(--accent); font-size: 15px; }
+
+  /* ---------- Recap / nav ---------- */
+  .recap-box { background: var(--surface); border: 1px solid var(--line-strong); box-shadow: var(--shadow); padding: 22px 24px; margin-top: 20px; }
+  .recap-box ul { margin: 0; padding-left: 18px; }
+  .recap-box li { font-size: 14.5px; margin-bottom: 8px; }
+  .recap-box li:last-child { margin-bottom: 0; }
+
+  .next-box {
+    margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    background: var(--accent-2-soft); border-left: 3px solid var(--accent-2); padding: 16px 18px;
+  }
+  .next-box .lbl { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-2); margin-bottom: 4px; }
+  .next-box p { margin: 0; font-size: 14.5px; }
+
+  .nav-links { display: flex; justify-content: flex-end; gap: 16px; margin-top: 60px; flex-wrap: wrap; }
+  .nav-link { flex: 1; min-width: 220px; max-width: 320px; border: 1px solid var(--line-strong); background: var(--surface); padding: 14px 18px; text-decoration: none; color: var(--ink); box-shadow: var(--shadow); text-align: right; }
+  .nav-link .lbl { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 4px; display: block; }
+  .nav-link .ttl { font-family: var(--font-display); font-weight: 600; font-size: 16px; }
+  .nav-link:hover { border-color: var(--accent); }
+
+  footer {
+    margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); font-family: var(--font-mono);
+    font-size: 11.5px; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .credit { margin-top: 14px; text-align: center; font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); }
+  .credit a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px dotted var(--ink-faint); }
+  .credit a:hover { color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+
+<div class="page">
+
+  <nav class="crumb">
+    <a href="index.html">Blueprint OOP</a>
+    <span>/</span>
+    <span>Modul 1</span>
+    <span>/</span>
+    <span class="now">Pertemuan 1</span>
+  </nav>
+
+  <div class="progress-shell">
+    <span class="progress-label">Progres sesi</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-count" id="progressCount">0 / 4</span>
+  </div>
+
+  <header class="hero">
+    <div class="eyebrow">Sheet 01 &middot; Materi Detail</div>
+    <h1 class="title">Objek Pertamamu</h1>
+    <p class="subtitle">Kenapa sih kita butuh OOP, dan gimana caranya JavaScript ngebungkus data plus perilaku jadi satu hal yang namanya <em>objek</em>.</p>
+    <div class="meta-row">
+      <span><strong>Durasi:</strong> 120 menit</span>
+      <span><strong>Prasyarat:</strong> variabel, function, array</span>
+      <span><strong>Bahasa:</strong> JavaScript (ES6+)</span>
+    </div>
+  </header>
+
+  <!-- SECTION 1: WHY -->
+  <section id="s1">
+    <div class="section-head">
+      <span class="section-num">1</span>
+      <h2 class="section-title">Gudang yang Berantakan</h2>
+      <label class="mark-done" data-progress-item="0">
+        <input type="checkbox"> Sudah paham
+      </label>
+    </div>
+    <div class="prose">
+      <p>Coba bayangin kamu baru pindah rumah. Di garasi ada obeng, paku, kaleng cat, sama meteran — berantakan semua numpuk di lantai. Tiap kali mau kerja, kamu harus inget-inget sendiri: <em>"cat warna biru itu punya siapa ya, sisa berapa liter, obeng mana yang masih bagus."</em> Nggak ada yang ngumpulin barang-barang itu jadi satu tempat.</p>
+      <p>Nah, itu persis yang kejadian di kode <strong>procedural</strong> begitu aplikasinya mulai gede: banyak variabel lepas yang sebenarnya "punya" satu hal yang sama, tapi ditulis kepisah-pisah. Lihat dulu deh contohnya di bawah — coba jalankan, terus bayangin kalau bukan 2 buku, tapi 50 buku.</p>
+      <p>Nama kerennya <strong>Object-Oriented Programming</strong> (OOP), atau dalam Bahasa Indonesia <strong>Pemrograman Berorientasi Objek</strong>. Intinya gampang kok: daripada nambah variabel baru tiap kali ada data baru, kita tinggal nambah satu <em>objek</em> baru — satu paket rapi yang udah bawa data plus caranya dipakai sekaligus. Coba deh hitung sendiri bedanya: gaya procedural di atas butuh <strong>3 variabel + 1 fungsi per buku</strong>. Buat 2 buku aja udah 6 variabel + 2 fungsi yang isinya nyaris sama persis. Buat 50 buku, jadinya <strong>150 variabel + 50 fungsi</strong> — dan kalau ada satu bug kecil di logika <code>tampilkanInfo</code>, kamu harus benerinnya di 50 tempat berbeda.</p>
+    </div>
+
+    <div class="tabs">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="before">Sebelum · Procedural</button>
+        <button class="tab-btn" data-tab="after">Sesudah · Objek</button>
+        <button class="tab-btn" data-tab="motor">Contoh Lain · Motor</button>
+      </div>
+
+      <div class="tab-panel active" data-panel="before">
+        <p class="tab-note">Tiap ada buku baru, berarti nambah <strong>3 variabel + 1 fungsi baru</strong>. Data yang harusnya nyambung malah tercecer ke mana-mana.</p>
+        <div class="runner">
+          <div class="runner-head"><span>sebelum.js</span><button class="run-btn" data-run="r1">Jalankan ▸</button></div>
+          <pre class="code-box" id="src-r1">let judulBuku1 = "Laskar Pelangi";
+let penulisBuku1 = "Andrea Hirata";
+let tahunBuku1 = 2005;
+
+let judulBuku2 = "Bumi Manusia";
+let penulisBuku2 = "Pramoedya Ananta Toer";
+let tahunBuku2 = 1980;
+
+function tampilkanInfoBuku1() {
+  console.log(judulBuku1 + " oleh " + penulisBuku1 + " (" + tahunBuku1 + ")");
+}
+function tampilkanInfoBuku2() {
+  console.log(judulBuku2 + " oleh " + penulisBuku2 + " (" + tahunBuku2 + ")");
+}
+
+tampilkanInfoBuku1();
+tampilkanInfoBuku2();</pre>
+          <div class="output-panel" id="out-r1"><span class="output-placeholder">Klik "Jalankan" untuk melihat hasilnya di sini.</span></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="after">
+        <p class="tab-note">Data dan cara nampilinnya jadi <strong>satu paket</strong> dalam satu objek. Nambah buku baru nggak bikin variabel baru yang berserakan.</p>
+        <div class="runner">
+          <div class="runner-head"><span>sesudah.js</span><button class="run-btn" data-run="r2">Jalankan ▸</button></div>
+          <pre class="code-box" id="src-r2">const buku1 = {
+  judul: "Laskar Pelangi",
+  penulis: "Andrea Hirata",
+  tahun: 2005,
+  tampilkanInfo() {
+    console.log(`${this.judul} oleh ${this.penulis} (${this.tahun})`);
+  }
+};
+
+const buku2 = {
+  judul: "Bumi Manusia",
+  penulis: "Pramoedya Ananta Toer",
+  tahun: 1980,
+  tampilkanInfo() {
+    console.log(`${this.judul} oleh ${this.penulis} (${this.tahun})`);
+  }
+};
+
+[buku1, buku2].forEach(b => b.tampilkanInfo());</pre>
+          <div class="output-panel" id="out-r2"><span class="output-placeholder">Klik "Jalankan" untuk melihat hasilnya di sini.</span></div>
+        </div>
+        <div class="callout"><strong>Jujur aja nih:</strong> method <code>tampilkanInfo()</code> di atas masih harus ditulis ulang di tiap objek. Itu masalah beneran — makanya di Pertemuan 2 kita kenalan sama <code>class</code>, cetak biru yang nulis method itu cukup sekali buat semua objek sejenis.</div>
+      </div>
+
+      <div class="tab-panel" data-panel="motor">
+        <p class="tab-note">Pola yang sama ini berlaku buat data apa pun, bukan cuma buku. Coba bandingin versi procedural sama versi objek buat data motor di bawah ini.</p>
+        <div class="runner">
+          <div class="runner-head"><span>motor-procedural-vs-objek.js</span><button class="run-btn" data-run="r1b">Jalankan ▸</button></div>
+          <pre class="code-box" id="src-r1b">// --- gaya procedural ---
+let namaMotor1 = "Vario";
+let ccMotor1 = 125;
+function infoMotor1() {
+  console.log(namaMotor1 + " - " + ccMotor1 + "cc");
+}
+infoMotor1();
+
+// --- gaya objek ---
+const motor1 = {
+  nama: "Vario",
+  cc: 125,
+  info() {
+    console.log(`${this.nama} - ${this.cc}cc`);
+  }
+};
+motor1.info();</pre>
+          <div class="output-panel" id="out-r1b"><span class="output-placeholder">Klik "Jalankan" untuk melihat hasilnya di sini.</span></div>
+        </div>
+        <div class="callout">Hasilnya sama persis, tapi versi objek jauh lebih gampang ditelusuri: mau tahu semua data motor ini? Tinggal lihat satu variabel <code>motor1</code> aja, nggak perlu ngumpulin beberapa variabel lepas satu-satu.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: 4 PILLARS PREVIEW -->
+  <section id="s2">
+    <div class="section-head">
+      <span class="section-num">2</span>
+      <h2 class="section-title">Empat Pilar OOP — Sekilas</h2>
+      <label class="mark-done" data-progress-item="1"><input type="checkbox"> Sudah paham</label>
+    </div>
+    <div class="prose">
+      <p>OOP itu berdiri di atas empat gagasan besar. Hari ini kamu cukup <strong>kenalan sama namanya dan analoginya</strong> dulu — tiap pilar bakal dibahas lebih dalam satu-satu di pertemuan-pertemuan berikutnya.</p>
+    </div>
+    <div class="pillar-grid">
+      <div class="pillar-card">
+        <div class="pillar-tag">Pertemuan 3</div>
+        <h4>Encapsulation</h4>
+        <p>Kotak perkakas yang terkunci — orang lain tidak bisa mengubah isinya sembarangan, harus lewat "pintu" yang kamu sediakan.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-tag">Pertemuan 4–5</div>
+        <h4>Inheritance</h4>
+        <p>Resep turunan — resep "Kue Dasar" diwariskan ke "Kue Coklat" dan "Kue Keju" tanpa menulis ulang semuanya dari nol.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-tag">Pertemuan 6</div>
+        <h4>Polymorphism</h4>
+        <p>Perintah "mulai!" pada balapan — mobil melaju, motor melaju, sepeda melaju — sama perintahnya, beda caranya bergerak.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-tag">Pertemuan 7</div>
+        <h4>Abstraction</h4>
+        <p>Tombol power di remote TV — kamu cukup pencet, tanpa perlu tahu rangkaian elektronik di baliknya.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: OBJECT LITERAL -->
+  <section id="s3">
+    <div class="section-head">
+      <span class="section-num">3</span>
+      <h2 class="section-title">Kotak Berlabel: Objek di JavaScript</h2>
+      <label class="mark-done" data-progress-item="2"><input type="checkbox"> Sudah paham</label>
+    </div>
+    <div class="prose">
+      <p>Sekarang coba bayangin semua alat di garasi tadi kamu masukin ke <strong>satu kotak berlabel "Kotak Perkakas"</strong>. Daripada inget belasan nama variabel kepisah-pisah, kamu tinggal inget satu nama aja: kotaknya. Di JavaScript, kotak ini disebut <strong>objek</strong>, dan cara nulisnya kayak gini — pake kurung kurawal <code>{ }</code> — disebut <strong>object literal</strong>.</p>
+      <p>Barang di dalam kotak (data) itu disebut <strong>properti</strong>. Hal yang bisa dilakukan kotak itu (fungsi) disebut <strong>method</strong>. Terus <code>this</code> itu cara si kotak nunjuk ke dirinya sendiri — kayak label kecil di dalam kotak yang tulisannya "isi kotak ini", tanpa perlu nyebut nama kotaknya.</p>
+      <p>Properti nggak harus cuma angka atau teks doang — bisa berisi teks, angka, boolean (benar/salah), bahkan array atau objek lain di dalamnya. Method pun bebas isinya logika apa aja, nggak cuma <code>console.log</code>. Yang bikin ini jadi "OOP" bukan bentuk kurung kurawalnya, tapi <strong>fakta bahwa data dan cara ngolahnya hidup di satu wadah yang sama</strong>.</p>
+    </div>
+    <div class="runner">
+      <div class="runner-head"><span>anatomi-objek.js</span><button class="run-btn" data-run="r2b">Jalankan ▸</button></div>
+      <pre class="code-box" id="src-r2b">const kotakPerkakas = {
+  // ---- properti (data di dalam kotak) ----
+  obeng: 2,
+  cat: "biru",
+
+  // ---- method (hal yang bisa dilakukan kotak) ----
+  cekIsi() {
+    // "this" = kotak ini sendiri
+    console.log(`Ada ${this.obeng} obeng dan cat warna ${this.cat}`);
+  }
+};
+
+kotakPerkakas.cekIsi();</pre>
+      <div class="output-panel" id="out-r2b"><span class="output-placeholder">Klik "Jalankan" untuk melihat hasilnya di sini.</span></div>
+    </div>
+    <p class="tab-note" style="margin-top:16px;">Nih contoh lain, beda domain — tapi konsepnya persis sama: properti buat data, method buat perilaku, <code>this</code> buat nunjuk ke objek itu sendiri.</p>
+    <div class="runner">
+      <div class="runner-head"><span>anatomi-objek-2.js</span><button class="run-btn" data-run="r2c">Jalankan ▸</button></div>
+      <pre class="code-box" id="src-r2c">const kucing = {
+  nama: "Milo",
+  suara: "Meong",
+  bersuara() {
+    console.log(`${this.nama} berbunyi: ${this.suara}!`);
+  }
+};
+
+kucing.bersuara();</pre>
+      <div class="output-panel" id="out-r2c"><span class="output-placeholder">Klik "Jalankan" untuk melihat hasilnya di sini.</span></div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: EXERCISE PLAYGROUND -->
+  <section id="s4">
+    <div class="section-head">
+      <span class="section-num">4</span>
+      <h2 class="section-title">Latihan: Bangun Objek Bukumu Sendiri</h2>
+      <label class="mark-done" data-progress-item="3"><input type="checkbox"> Selesai latihan</label>
+    </div>
+    <div class="prose">
+      <p>Coba lengkapi kode di bawah ini langsung di kotak edit — isi properti buku favoritmu, terus lengkapi method <code>tampilkanInfo()</code> biar bisa nyetak ringkasannya. Pencet <strong>Jalankan</strong> buat nyobain.</p>
+    </div>
+    <div class="runner">
+      <div class="runner-head"><span>latihan-buku.js — bisa diedit</span><button class="run-btn" data-run="r3">Jalankan ▸</button></div>
+      <textarea class="code-editor" id="src-r3" spellcheck="false">const buku = {
+  judul: "",     // TODO: isi judul buku favoritmu
+  penulis: "",   // TODO: isi nama penulisnya
+  tahun: 0,      // TODO: isi tahun terbit
+
+  tampilkanInfo() {
+    // TODO: cetak ringkasan buku ke console
+    // gunakan this.judul, this.penulis, this.tahun
+  }
+};
+
+buku.tampilkanInfo();</textarea>
+      <div class="output-panel" id="out-r3"><span class="output-placeholder">Lengkapi kode lalu klik "Jalankan".</span></div>
+    </div>
+    <button class="reveal-btn" id="revealBtn">Lihat kunci jawaban</button>
+    <div class="answer-box" id="answerBox">
+      <div class="runner">
+        <div class="runner-head"><span>kunci-jawaban.js</span></div>
+        <pre class="code-box">const buku = {
+  judul: "Laskar Pelangi",
+  penulis: "Andrea Hirata",
+  tahun: 2005,
+
+  tampilkanInfo() {
+    console.log(`${this.judul} oleh ${this.penulis} (${this.tahun})`);
+  }
+};
+
+buku.tampilkanInfo();</pre>
+      </div>
+    </div>
+
+    <div class="prose" style="margin-top:28px;">
+      <p><strong>Latihan tambahan:</strong> sekarang coba ganti ke domain lain. Lengkapi objek <code>film</code> di bawah — isi properti judul, sutradara, dan tahun rilis film favoritmu, terus lengkapi <code>tampilkanInfo()</code>.</p>
+    </div>
+    <div class="runner">
+      <div class="runner-head"><span>latihan-film.js — bisa diedit</span><button class="run-btn" data-run="r3b">Jalankan ▸</button></div>
+      <textarea class="code-editor" id="src-r3b" spellcheck="false" style="min-height:160px;">const film = {
+  judul: "",       // TODO: isi judul film favoritmu
+  sutradara: "",   // TODO: isi nama sutradaranya
+  tahunRilis: 0,   // TODO: isi tahun rilisnya
+
+  tampilkanInfo() {
+    // TODO: cetak ringkasan film ke console
+    // gunakan this.judul, this.sutradara, this.tahunRilis
+  }
+};
+
+film.tampilkanInfo();</textarea>
+      <div class="output-panel" id="out-r3b"><span class="output-placeholder">Lengkapi kode lalu klik "Jalankan".</span></div>
+    </div>
+    <button class="reveal-btn" id="revealBtn2">Lihat kunci jawaban</button>
+    <div class="answer-box" id="answerBox2">
+      <div class="runner">
+        <div class="runner-head"><span>kunci-jawaban.js</span></div>
+        <pre class="code-box">const film = {
+  judul: "Laskar Pelangi",
+  sutradara: "Riri Riza",
+  tahunRilis: 2008,
+
+  tampilkanInfo() {
+    console.log(`${this.judul} (${this.tahunRilis}), disutradarai ${this.sutradara}`);
+  }
+};
+
+film.tampilkanInfo();</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: QUIZ -->
+  <section id="s5">
+    <div class="section-head">
+      <span class="section-num">5</span>
+      <h2 class="section-title">Cek Pemahaman</h2>
+    </div>
+    <div class="quiz" id="quiz">
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">1. Coba lihat objek <code>buku</code> tadi — mana yang disebut <em>method</em>?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">judul</button>
+          <button class="quiz-opt" data-correct="true">tampilkanInfo()</button>
+          <button class="quiz-opt">tahun</button>
+          <button class="quiz-opt">buku</button>
+        </div>
+        <div class="quiz-explain">Inget ya: properti itu data (judul, tahun), method itu fungsi di dalam objek (tampilkanInfo).</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">2. Sebenarnya <code>this</code> di dalam method sebuah objek itu ngapain sih?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">Merujuk ke objek lain secara acak</button>
+          <button class="quiz-opt" data-correct="true">Merujuk ke objek tempat method itu berada</button>
+          <button class="quiz-opt">Menghapus objek dari memori</button>
+          <button class="quiz-opt">Membuat objek baru secara otomatis</button>
+        </div>
+        <div class="quiz-explain"><code>this</code> itu cara objek nunjuk ke "dirinya sendiri" — kayak label "isi kotak ini" di dalam kotak perkakas.</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">3. Kenapa sih kode procedural (banyak variabel lepas) susah berkembang begitu aplikasinya makin gede?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">Karena JavaScript membatasi jumlah variabel</button>
+          <button class="quiz-opt" data-correct="true">Karena data yang berhubungan tidak dikelompokkan, jadi sulit dilacak dan gampang salah</button>
+          <button class="quiz-opt">Karena procedural hanya bisa dipakai di bahasa lain</button>
+          <button class="quiz-opt">Karena procedural berjalan lebih lambat</button>
+        </div>
+        <div class="quiz-explain">Persis kayak garasi berantakan tadi — makin banyak barang, makin susah tahu barang mana punya siapa.</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">4. Nah, pasangan analogi mana yang paling pas?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">Objek = alat, Properti = kotak</button>
+          <button class="quiz-opt" data-correct="true">Kotak perkakas = objek, barang di dalamnya = properti, hal yang bisa dilakukan = method</button>
+          <button class="quiz-opt"><code>this</code> = nama variabel global</button>
+          <button class="quiz-opt">Method = data yang tidak pernah berubah</button>
+        </div>
+        <div class="quiz-explain">Kotak = objek, isi kotak = properti (data), aksi kotak = method (fungsi). Gampang, kan?</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">5. Kalau ada 50 buku ditulis pakai gaya procedural (kayak contoh di Bagian 1), kira-kira butuh berapa banyak variabel + fungsi lepas?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">Tetap 3 variabel + 1 fungsi, tidak peduli jumlah bukunya</button>
+          <button class="quiz-opt" data-correct="true">Sekitar 150 variabel + 50 fungsi yang isinya nyaris identik</button>
+          <button class="quiz-opt">50 variabel saja, tanpa fungsi tambahan</button>
+          <button class="quiz-opt">JavaScript akan menolak menjalankan kode sebanyak itu</button>
+        </div>
+        <div class="quiz-explain">3 variabel + 1 fungsi per buku, dikaliin 50 buku — dan kalau ada bug, harus dibenerin di puluhan tempat berbeda.</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">6. Lihat objek <code>kucing</code> (<code>{ nama, suara, bersuara() {...} }</code>) — pernyataan mana yang bener?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">bersuara() adalah properti, nama dan suara adalah method</button>
+          <button class="quiz-opt" data-correct="true">nama dan suara adalah properti (data); bersuara() adalah method (perilaku) yang memakai this untuk mengakses keduanya</button>
+          <button class="quiz-opt">this di dalam bersuara() merujuk ke objek buku dari contoh sebelumnya</button>
+          <button class="quiz-opt">Properti dan method di JavaScript harus dipisah ke variabel berbeda</button>
+        </div>
+        <div class="quiz-explain">Pola ini selalu berulang: properti = data, method = perilaku, this = "diri objek ini sendiri" — berlaku buat buku, kucing, motor, atau objek apa pun.</div>
+      </div>
+
+    </div>
+    <div class="quiz-score" id="quizScore">Skor: <strong>0 / 6</strong> terjawab benar</div>
+  </section>
+
+  <!-- SECTION 6: RECAP -->
+  <section id="s6">
+    <div class="section-head">
+      <span class="section-num">6</span>
+      <h2 class="section-title">Ringkasan Pertemuan 1</h2>
+    </div>
+    <div class="recap-box">
+      <ul>
+        <li>Kode <strong>procedural</strong> nyimpen data yang berhubungan sebagai variabel-variabel terpisah — gampang berantakan begitu aplikasinya makin gede (2 buku = 6 variabel + 2 fungsi, 50 buku = 150 variabel + 50 fungsi).</li>
+        <li><strong>Objek</strong> ngebungkus data (properti) dan perilaku (method) jadi satu kesatuan, kayak barang-barang dalam satu kotak berlabel — pola yang sama berlaku buat buku, motor, kucing, film, atau apa pun.</li>
+        <li><code>this</code> di dalam method nunjuk ke objek itu sendiri, nggak peduli objeknya buku, motor, atau kucing.</li>
+        <li>Properti bisa berupa data jenis apa aja (teks, angka, boolean, array); yang bikin sesuatu jadi "objek" adalah data dan perilakunya hidup dalam satu wadah yang sama.</li>
+        <li>Empat pilar OOP — encapsulation, inheritance, polymorphism, abstraction — baru dikenalin sekilas hari ini, bakal didalami satu-satu ke depannya.</li>
+      </ul>
+    </div>
+    <div class="next-box">
+      <div>
+        <div class="lbl">Selanjutnya</div>
+        <p>Di Pertemuan 2, object literal ini bakal kita ubah jadi <strong>class</strong> — cetak biru yang bisa nyetak banyak objek sekaligus, tanpa perlu nulis ulang method satu-satu.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="nav-links">
+    <a class="nav-link next" href="p2-rumah-dari-cetak-biru.html">
+      <span class="lbl">Selanjutnya →</span>
+      <span class="ttl">Pertemuan 2 — Rumah Dari Cetak Biru</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>Blueprint OOP — Pertemuan 1</span>
+    <span>Objek Pertamamu</span>
+  </footer>
+  <div class="credit"><a href="https://boflyeta.github.io/" target="_blank" rel="noopener" title="Bofly Eta — Software Engineer">made by boflyeta.dev</a></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Sandbox code runner ---------- */
+  function runCode(code, outputEl) {
+    outputEl.innerHTML = "";
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("sandbox", "allow-scripts");
+    iframe.style.display = "none";
+    document.body.appendChild(iframe);
+
+    function cleanup() {
+      window.removeEventListener("message", handler);
+      setTimeout(function () { if (iframe.parentNode) iframe.parentNode.removeChild(iframe); }, 50);
+    }
+
+    function handler(e) {
+      if (!e.data || e.data.__sandbox !== true || e.source !== iframe.contentWindow) return;
+      var line = document.createElement("div");
+      line.className = "out-line" + (e.data.type === "error" ? " out-error" : e.data.type === "warn" ? " out-warn" : "");
+      line.textContent = e.data.args.join(" ");
+      outputEl.appendChild(line);
+    }
+    window.addEventListener("message", handler);
+
+    var payload = JSON.stringify(String(code));
+    var html = "<script>" +
+      "var __code = " + payload + ";" +
+      "function __send(type, args) { try { parent.postMessage({ __sandbox: true, type: type, args: args.map(function(a){ try { return (typeof a === 'object' && a !== null) ? JSON.stringify(a) : String(a); } catch(e){ return String(a); } }) }, '*'); } catch(e) {} }" +
+      "console.log = function(){ __send('log', Array.prototype.slice.call(arguments)); };" +
+      "console.error = function(){ __send('error', Array.prototype.slice.call(arguments)); };" +
+      "console.warn = function(){ __send('warn', Array.prototype.slice.call(arguments)); };" +
+      "try { (0, eval)(__code); } catch (err) { __send('error', [err.message]); }" +
+      "<\/script>";
+    iframe.srcdoc = html;
+    setTimeout(cleanup, 700);
+  }
+
+  document.querySelectorAll("[data-run]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var id = btn.getAttribute("data-run");
+      var srcEl = document.getElementById("src-" + id);
+      var outEl = document.getElementById("out-" + id);
+      var code = (srcEl.tagName === "TEXTAREA") ? srcEl.value : srcEl.textContent;
+      runCode(code, outEl);
+    });
+  });
+
+  /* ---------- Tabs ---------- */
+  document.querySelectorAll(".tab-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var tabs = btn.closest(".tabs");
+      tabs.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
+      tabs.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("active"); });
+      btn.classList.add("active");
+      tabs.querySelector('[data-panel="' + btn.getAttribute("data-tab") + '"]').classList.add("active");
+    });
+  });
+
+  /* ---------- Reveal answer (bisa lebih dari satu di halaman) ---------- */
+  document.querySelectorAll(".reveal-btn").forEach(function (revealBtn) {
+    var answerBox = revealBtn.nextElementSibling;
+    revealBtn.addEventListener("click", function () {
+      var open = answerBox.classList.toggle("open");
+      revealBtn.textContent = open ? "Sembunyikan kunci jawaban" : "Lihat kunci jawaban";
+    });
+  });
+
+  /* ---------- Quiz ---------- */
+  var correctCount = 0;
+  var totalQuiz = document.querySelectorAll("[data-quiz]").length;
+  document.querySelectorAll("[data-quiz]").forEach(function (card) {
+    var answered = false;
+    var explain = card.querySelector(".quiz-explain");
+    card.querySelectorAll(".quiz-opt").forEach(function (opt) {
+      opt.addEventListener("click", function () {
+        if (answered) return;
+        answered = true;
+        var isCorrect = opt.getAttribute("data-correct") === "true";
+        card.querySelectorAll(".quiz-opt").forEach(function (o) { o.disabled = true; });
+        if (isCorrect) {
+          opt.classList.add("correct");
+          explain.classList.add("ok");
+          correctCount++;
+        } else {
+          opt.classList.add("incorrect");
+          var correctOpt = card.querySelector('[data-correct="true"]');
+          if (correctOpt) correctOpt.classList.add("correct");
+        }
+        explain.classList.add("show");
+        var scoreEl = document.getElementById("quizScore");
+        scoreEl.innerHTML = "Skor: <strong>" + correctCount + " / " + totalQuiz + "</strong> terjawab benar";
+      });
+    });
+  });
+
+  /* ---------- Progress checklist (localStorage, per-viewer) ---------- */
+  var STORAGE_KEY = "blueprint-oop-p1-progress";
+  var checkboxes = document.querySelectorAll("[data-progress-item] input");
+
+  function loadProgress() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+  function saveProgress(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function updateBar() {
+    var done = 0;
+    checkboxes.forEach(function (cb) { if (cb.checked) done++; });
+    var pct = Math.round((done / checkboxes.length) * 100);
+    document.getElementById("progressFill").style.width = pct + "%";
+    document.getElementById("progressCount").textContent = done + " / " + checkboxes.length;
+  }
+
+  var state = loadProgress();
+  checkboxes.forEach(function (cb) {
+    var key = cb.closest("[data-progress-item]").getAttribute("data-progress-item");
+    if (state[key]) {
+      cb.checked = true;
+      cb.closest(".mark-done").classList.add("is-done");
+    }
+    cb.addEventListener("change", function () {
+      var st = loadProgress();
+      st[key] = cb.checked;
+      saveProgress(st);
+      cb.closest(".mark-done").classList.toggle("is-done", cb.checked);
+      updateBar();
+    });
+  });
+  updateBar();
+})();
+</script>
+
+</body>
+</html>

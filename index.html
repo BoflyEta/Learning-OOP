@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blueprint OOP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF3F1;
+    --surface: #FFFFFF;
+    --surface-2: #E3ECE9;
+    --ink: #142430;
+    --ink-soft: #46606B;
+    --ink-faint: #7C939B;
+    --line: #C3D2CF;
+    --line-strong: #9DB3AF;
+    --accent: #1E5C97;
+    --accent-ink: #ffffff;
+    --accent-soft: #DDEAF6;
+    --accent-2: #A85A25;
+    --accent-2-soft: #F5E2CD;
+    --grid-line: rgba(20, 36, 48, 0.05);
+    --shadow: 0 1px 2px rgba(20, 36, 48, 0.06), 0 8px 24px rgba(20, 36, 48, 0.05);
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0E2233;
+      --surface: #14304A;
+      --surface-2: #0C2032;
+      --ink: #E9F1F6;
+      --ink-soft: #A9C2D1;
+      --ink-faint: #6E8FA0;
+      --line: #2C5271;
+      --line-strong: #3E6D8F;
+      --accent: #74B4EC;
+      --accent-ink: #0A1926;
+      --accent-soft: rgba(116, 180, 236, 0.14);
+      --accent-2: #E7A15F;
+      --accent-2-soft: rgba(231, 161, 95, 0.14);
+      --grid-line: rgba(233, 241, 246, 0.05);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0E2233;
+    --surface: #14304A;
+    --surface-2: #0C2032;
+    --ink: #E9F1F6;
+    --ink-soft: #A9C2D1;
+    --ink-faint: #6E8FA0;
+    --line: #2C5271;
+    --line-strong: #3E6D8F;
+    --accent: #74B4EC;
+    --accent-ink: #0A1926;
+    --accent-soft: rgba(116, 180, 236, 0.14);
+    --accent-2: #E7A15F;
+    --accent-2-soft: rgba(231, 161, 95, 0.14);
+    --grid-line: rgba(233, 241, 246, 0.05);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  a { color: var(--accent); }
+
+  .page {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+
+  /* ---------- Header ---------- */
+  header.hero {
+    margin-bottom: 28px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 22px;
+    height: 1px;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  h1.title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(34px, 5.2vw, 54px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 14px 0 10px;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  .subtitle {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  /* ---------- Title block (blueprint metadata table) ---------- */
+  .titleblock {
+    margin-top: 32px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (max-width: 640px) {
+    .titleblock { grid-template-columns: repeat(2, 1fr); }
+  }
+  .tb-cell {
+    padding: 14px 16px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .tb-cell:nth-child(4n) { border-right: none; }
+  @media (max-width: 640px) {
+    .tb-cell:nth-child(4n) { border-right: 1px solid var(--line); }
+    .tb-cell:nth-child(2n) { border-right: none; }
+  }
+  .tb-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .tb-value {
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+
+  /* ---------- Section headings ---------- */
+  section { margin-top: 64px; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 12px;
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+  }
+  h2.section-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(22px, 3vw, 28px);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .section-note {
+    margin: -8px 0 24px;
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 68ch;
+  }
+
+  /* ---------- Overview stat cards ---------- */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line-strong);
+    border: 1px solid var(--line-strong);
+  }
+  @media (max-width: 720px) {
+    .overview-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .stat-card {
+    background: var(--surface);
+    padding: 18px 18px 20px;
+  }
+  .stat-card h3 {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 8px;
+    font-weight: 500;
+  }
+  .stat-card p {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+  .stat-card p + p { margin-top: 6px; }
+
+  /* ---------- Curriculum map ---------- */
+  .map-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 780px) {
+    .map-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .map-grid { grid-template-columns: 1fr; }
+  }
+  .map-col {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 18px 16px 20px;
+  }
+  .map-col-title {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .map-col-heading {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16.5px;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .map-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 2px solid var(--line);
+  }
+  .map-list li {
+    position: relative;
+    padding: 0 0 16px 18px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .map-list li:last-child { padding-bottom: 0; }
+  .map-list li::before {
+    content: attr(data-n);
+    position: absolute;
+    left: -11px;
+    top: -1px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .map-list li strong { color: var(--ink); font-weight: 600; display: block; }
+
+  /* ---------- Sheet cards (per pertemuan) ---------- */
+  .sheet {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    box-shadow: var(--shadow);
+    margin-bottom: 22px;
+  }
+  .sheet-tab {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 5px 12px;
+    font-weight: 600;
+  }
+  .sheet-inner { padding: 44px 26px 26px; }
+  @media (max-width: 560px) { .sheet-inner { padding: 44px 18px 20px; } }
+
+  .sheet-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  h3.sheet-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 21px;
+    margin: 0;
+    text-wrap: balance;
+    max-width: 46ch;
+  }
+  .sheet-meta {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .sheet-block { margin-top: 18px; }
+  .sheet-block h4 {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 8px;
+    font-weight: 500;
+  }
+  .sheet-block ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .sheet-block ul li { margin-bottom: 4px; font-size: 14.5px; }
+  .sheet-block p { margin: 0; font-size: 14.5px; color: var(--ink); }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 4px 10px;
+    border: 1px solid transparent;
+  }
+
+  .exercise-box {
+    background: var(--accent-2-soft);
+    border-left: 3px solid var(--accent-2);
+    padding: 12px 14px;
+    font-size: 14.5px;
+  }
+  .exercise-box strong { color: var(--accent-2); }
+
+  .detail-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 18px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    padding: 8px 14px;
+  }
+  .detail-link:hover { background: var(--accent-soft); }
+
+  .time-row {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--line);
+    font-size: 12.5px;
+    overflow-x: auto;
+  }
+  .time-seg {
+    flex: 1 1 0;
+    min-width: 84px;
+    padding: 8px 10px;
+    border-right: 1px solid var(--line);
+    text-align: center;
+  }
+  .time-seg:last-child { border-right: none; }
+  .time-seg .m { display: block; font-family: var(--font-mono); font-weight: 600; color: var(--accent); font-size: 13.5px; }
+  .time-seg .l { display: block; color: var(--ink-soft); margin-top: 2px; }
+
+  /* ---------- Assessment table ---------- */
+  .assess-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    font-size: 14.5px;
+  }
+  .assess-table th, .assess-table td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .assess-table th {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    background: var(--surface-2);
+  }
+  .assess-table td.num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .assess-table tr:last-child td { border-bottom: none; font-weight: 600; }
+  .table-wrap { overflow-x: auto; }
+
+  /* ---------- Tips / references ---------- */
+  .note-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 700px) { .note-grid { grid-template-columns: 1fr; } }
+  .note-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 20px 20px 22px;
+  }
+  .note-card h3 {
+    font-family: var(--font-display);
+    font-size: 17px;
+    margin: 0 0 12px;
+  }
+  .note-card ul { margin: 0; padding-left: 18px; }
+  .note-card li { margin-bottom: 8px; font-size: 14.5px; }
+  .note-card li:last-child { margin-bottom: 0; }
+
+  footer {
+    margin-top: 72px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .credit { margin-top: 14px; text-align: center; font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); }
+  .credit a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px dotted var(--ink-faint); }
+  .credit a:hover { color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+
+<div class="page">
+
+  <header class="hero">
+    <div class="eyebrow">Kerangka Ajar &middot; Kelas Coding Pemula</div>
+    <h1 class="title">Pemrograman Berorientasi Objek</h1>
+    <p class="subtitle">Rancangan 12 pertemuan untuk mengajarkan empat pilar OOP — encapsulation, inheritance, polymorphism, abstraction — memakai JavaScript, dari objek literal sampai proyek akhir.</p>
+
+    <div class="titleblock">
+      <div class="tb-cell"><span class="tb-label">Mata Ajar</span><span class="tb-value">OOP dengan JavaScript</span></div>
+      <div class="tb-cell"><span class="tb-label">Level</span><span class="tb-value">Pemula (sudah tahu dasar JS)</span></div>
+      <div class="tb-cell"><span class="tb-label">Total Sesi</span><span class="tb-value">12 pertemuan</span></div>
+      <div class="tb-cell"><span class="tb-label">Durasi / Sesi</span><span class="tb-value">120 menit</span></div>
+      <div class="tb-cell"><span class="tb-label">Tools</span><span class="tb-value">VS Code, Node.js, Browser DevTools</span></div>
+      <div class="tb-cell"><span class="tb-label">Metode</span><span class="tb-value">Live coding + latihan + proyek</span></div>
+      <div class="tb-cell"><span class="tb-label">Output Akhir</span><span class="tb-value">Mini-project OOP</span></div>
+      <div class="tb-cell"><span class="tb-label">Revisi</span><span class="tb-value">27 Agu 2026</span></div>
+    </div>
+  </header>
+
+  <section id="overview">
+    <div class="section-head">
+      <span class="section-num">00</span>
+      <h2 class="section-title">Ringkasan Kelas</h2>
+    </div>
+    <div class="overview-grid">
+      <div class="stat-card">
+        <h3>Prasyarat</h3>
+        <p>Variabel, tipe data, function, array, object literal, dan loop dasar di JavaScript.</p>
+      </div>
+      <div class="stat-card">
+        <h3>Tujuan Umum</h3>
+        <p>Siswa mampu merancang dan menulis program JS memakai class, serta menjelaskan alasan di balik setiap pilar OOP.</p>
+      </div>
+      <div class="stat-card">
+        <h3>Analogi Kunci</h3>
+        <p>Class adalah cetak biru (blueprint); object adalah bangunan nyata yang dibuat dari cetak biru itu.</p>
+      </div>
+      <div class="stat-card">
+        <h3>Penilaian</h3>
+        <p>Latihan tiap sesi, keaktifan diskusi, dan proyek akhir beserta presentasinya.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="map">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Peta Kurikulum</h2>
+    </div>
+    <p class="section-note">Dua belas pertemuan dikelompokkan menjadi empat modul yang berurutan — tiap modul membangun konsep dari modul sebelumnya.</p>
+    <div class="map-grid">
+      <div class="map-col">
+        <div class="map-col-title">Modul 1</div>
+        <h3 class="map-col-heading">Fondasi OOP</h3>
+        <ul class="map-list">
+          <li data-n="1"><strong>Pengantar Paradigma OOP</strong>Objek di JavaScript</li>
+          <li data-n="2"><strong>Class &amp; Constructor</strong>Membuat cetak biru pertama</li>
+          <li data-n="3"><strong>Encapsulation</strong>Private field &amp; getter/setter</li>
+        </ul>
+      </div>
+      <div class="map-col">
+        <div class="map-col-title">Modul 2</div>
+        <h3 class="map-col-heading">Pilar Lanjutan</h3>
+        <ul class="map-list">
+          <li data-n="4"><strong>Inheritance Dasar</strong>extends &amp; super()</li>
+          <li data-n="5"><strong>Inheritance Lanjutan</strong>Method overriding</li>
+          <li data-n="6"><strong>Polymorphism</strong>Satu pesan, banyak wujud</li>
+        </ul>
+      </div>
+      <div class="map-col">
+        <div class="map-col-title">Modul 3</div>
+        <h3 class="map-col-heading">Praktik &amp; Pola</h3>
+        <ul class="map-list">
+          <li data-n="7"><strong>Abstraction</strong>Kontrak &amp; abstract class</li>
+          <li data-n="8"><strong>Static &amp; Context</strong>this, static member</li>
+          <li data-n="9"><strong>Design Pattern Dasar</strong>Factory &amp; Singleton</li>
+        </ul>
+      </div>
+      <div class="map-col">
+        <div class="map-col-title">Modul 4</div>
+        <h3 class="map-col-heading">Proyek Akhir</h3>
+        <ul class="map-list">
+          <li data-n="10"><strong>Perencanaan Proyek</strong>Diagram class sederhana</li>
+          <li data-n="11"><strong>Implementasi</strong>Coding terbimbing</li>
+          <li data-n="12"><strong>Presentasi &amp; Evaluasi</strong>Code review kelas</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="modul-1">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Modul 1 — Fondasi OOP</h2>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 01 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Pengantar Paradigma OOP &amp; Objek di JavaScript</h3>
+          <span class="sheet-meta">Pertemuan 1<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Menjelaskan perbedaan gaya procedural dan OOP dengan kata-kata sendiri.</li>
+            <li>Menyebutkan empat pilar OOP: encapsulation, inheritance, polymorphism, abstraction.</li>
+            <li>Membuat object literal di JavaScript lengkap dengan method di dalamnya.</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">Procedural vs OOP</span>
+            <span class="tag">4 pilar OOP</span>
+            <span class="tag">Object literal</span>
+            <span class="tag">this</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Bedah bersama contoh kode procedural yang berantakan (banyak variabel lepas untuk satu entitas), lalu diskusikan bagaimana OOP merapikannya. Live coding: membungkus data dan perilaku ke dalam satu object literal.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Latihan mandiri —</strong> Buat object literal <code>buku</code> dengan properti judul, penulis, tahun, dan method <code>tampilkanInfo()</code> yang mencetak ringkasan ke console.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">20'</span><span class="l">Diskusi konsep</span></div>
+            <div class="time-seg"><span class="m">40'</span><span class="l">Live coding</span></div>
+            <div class="time-seg"><span class="m">40'</span><span class="l">Latihan mandiri</span></div>
+            <div class="time-seg"><span class="m">20'</span><span class="l">Bahas &amp; refleksi</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p1-objek-pertamamu.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 02 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Class &amp; Constructor</h3>
+          <span class="sheet-meta">Pertemuan 2<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Menulis syntax <code>class</code> dan <code>constructor()</code> dengan benar.</li>
+            <li>Membuat banyak instance dari satu class memakai <code>new</code>.</li>
+            <li>Menjelaskan hubungan class (cetak biru) dan object (hasil bangunannya).</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">class</span>
+            <span class="tag">constructor()</span>
+            <span class="tag">Properti instance</span>
+            <span class="tag">Method dalam class</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Refactor object literal <code>buku</code> dari pertemuan sebelumnya menjadi <code>class Buku</code>. Buat beberapa instance sekaligus untuk menunjukkan satu cetak biru bisa menghasilkan banyak object berbeda.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Latihan mandiri —</strong> Buat <code>class Mahasiswa</code> dengan constructor (nama, nim, jurusan) dan method <code>perkenalan()</code>. Buat minimal 3 instance berbeda.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">10'</span><span class="l">Review P1</span></div>
+            <div class="time-seg"><span class="m">20'</span><span class="l">Konsep class</span></div>
+            <div class="time-seg"><span class="m">45'</span><span class="l">Live coding</span></div>
+            <div class="time-seg"><span class="m">35'</span><span class="l">Latihan</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Refleksi</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p2-rumah-dari-cetak-biru.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 03 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Encapsulation — Menyembunyikan Data</h3>
+          <span class="sheet-meta">Pertemuan 3<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Menjelaskan kenapa data sebuah object perlu disembunyikan dari akses langsung.</li>
+            <li>Menggunakan private field (<code>#field</code>) beserta getter dan setter.</li>
+            <li>Menambahkan validasi data di dalam setter.</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">Private field #</span>
+            <span class="tag">get / set</span>
+            <span class="tag">Validasi data</span>
+            <span class="tag">Data hiding</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Live coding <code>class RekeningBank</code> dengan saldo sebagai private field, method <code>setor()</code> dan <code>tarik()</code> yang menolak nilai negatif atau saldo tidak cukup.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Latihan mandiri —</strong> Buat <code>class Produk</code> dengan harga sebagai private field. Setter harga harus menolak angka negatif atau bukan angka.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">10'</span><span class="l">Review P2</span></div>
+            <div class="time-seg"><span class="m">20'</span><span class="l">Konsep</span></div>
+            <div class="time-seg"><span class="m">45'</span><span class="l">Live coding</span></div>
+            <div class="time-seg"><span class="m">35'</span><span class="l">Latihan</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Refleksi</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p3-brankas-terkunci.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="modul-2">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Modul 2 — Pilar OOP Lanjutan</h2>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 04 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Inheritance Dasar</h3>
+          <span class="sheet-meta">Pertemuan 4<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Menjelaskan konsep pewarisan sebagai cara menghindari duplikasi kode.</li>
+            <li>Menggunakan <code>extends</code> dan <code>super()</code> dengan benar.</li>
+            <li>Membedakan hubungan "is-a" (inheritance) dari "has-a" (komposisi).</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">extends</span>
+            <span class="tag">super()</span>
+            <span class="tag">Class induk &amp; anak</span>
+            <span class="tag">is-a vs has-a</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Live coding <code>class Hewan</code> sebagai induk, lalu <code>class Kucing extends Hewan</code> dan <code>class Anjing extends Hewan</code> yang mewarisi properti nama dan method <code>makan()</code>.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Latihan mandiri —</strong> Buat <code>class Kendaraan</code> lalu turunkan menjadi <code>Mobil</code> dan <code>Motor</code> dengan properti tambahan yang khas masing-masing.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">10'</span><span class="l">Review P3</span></div>
+            <div class="time-seg"><span class="m">20'</span><span class="l">Konsep</span></div>
+            <div class="time-seg"><span class="m">45'</span><span class="l">Live coding</span></div>
+            <div class="time-seg"><span class="m">35'</span><span class="l">Latihan</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Refleksi</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p4-sifat-turunan.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 05 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Inheritance Lanjutan &amp; Method Overriding</h3>
+          <span class="sheet-meta">Pertemuan 5<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Meng-override method dari class induk di class anak.</li>
+            <li>Memanggil versi induk dari method yang di-override lewat <code>super.method()</code>.</li>
+            <li>Memeriksa tipe object dengan <code>instanceof</code>.</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">Method overriding</span>
+            <span class="tag">super.method()</span>
+            <span class="tag">instanceof</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Live coding hierarki bentuk: <code>class Bentuk</code> dengan method <code>luas()</code> generik, lalu <code>Lingkaran</code> dan <code>PersegiPanjang</code> yang meng-override <code>luas()</code> sesuai rumus masing-masing.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Latihan mandiri —</strong> Tambahkan method <code>hitungPajak()</code> pada hierarki Kendaraan (P4) dengan formula berbeda untuk Mobil dan Motor.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">10'</span><span class="l">Review P4</span></div>
+            <div class="time-seg"><span class="m">20'</span><span class="l">Konsep</span></div>
+            <div class="time-seg"><span class="m">45'</span><span class="l">Live coding</span></div>
+            <div class="time-seg"><span class="m">35'</span><span class="l">Latihan</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Refleksi</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p5-menimpa-warisan.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 06 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Polymorphism — Satu Pesan, Banyak Wujud</h3>
+          <span class="sheet-meta">Pertemuan 6<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Menjelaskan polymorphism sebagai kemampuan objek berbeda merespons pesan (method) yang sama dengan caranya sendiri.</li>
+            <li>Menulis kode yang memanggil method yang sama pada array berisi object dari class berbeda.</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">Polymorphism via inheritance</span>
+            <span class="tag">Duck typing</span>
+            <span class="tag">Loop atas array object</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Live coding: kumpulkan berbagai <code>Bentuk</code> (Lingkaran, PersegiPanjang, Segitiga) dalam satu array, lalu loop memanggil <code>.luas()</code> tanpa perlu tahu tipe spesifik tiap object.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Latihan mandiri —</strong> Buat <code>Karyawan</code>, <code>Manajer</code>, dan <code>Magang</code> yang masing-masing punya method <code>hitungGaji()</code> dengan formula berbeda, lalu hitung total gaji dari satu array campuran.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">10'</span><span class="l">Review P5</span></div>
+            <div class="time-seg"><span class="m">20'</span><span class="l">Konsep</span></div>
+            <div class="time-seg"><span class="m">45'</span><span class="l">Live coding</span></div>
+            <div class="time-seg"><span class="m">35'</span><span class="l">Latihan</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Refleksi</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p6-satu-aba-aba.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="modul-3">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Modul 3 — Praktik &amp; Pola Desain</h2>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 07 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Abstraction — Kontrak Tanpa Detail</h3>
+          <span class="sheet-meta">Pertemuan 7<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Menjelaskan abstraksi sebagai cara menyembunyikan detail implementasi dan hanya menampilkan hal yang perlu diketahui pemakai.</li>
+            <li>Membuat pola "abstract class" di JavaScript (yang secara native tidak punya keyword abstract).</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">Abstract class pattern</span>
+            <span class="tag">throw new Error()</span>
+            <span class="tag">Interface via duck typing</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Live coding <code>class BentukAbstrak</code> yang melempar error di constructor bila di-instantiate langsung, dan melempar error di <code>luas()</code> bila subclass lupa meng-override-nya.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Latihan mandiri —</strong> Rancang "kontrak" <code>BisaDibayar</code> — setiap class yang mengimplementasikannya wajib punya method <code>bayar()</code>. Terapkan pada minimal dua class berbeda.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">10'</span><span class="l">Review P6</span></div>
+            <div class="time-seg"><span class="m">20'</span><span class="l">Konsep</span></div>
+            <div class="time-seg"><span class="m">45'</span><span class="l">Live coding</span></div>
+            <div class="time-seg"><span class="m">35'</span><span class="l">Latihan</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Refleksi</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p7-kontrak-yang-mengikat.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 08 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Static Members &amp; Konteks <code>this</code></h3>
+          <span class="sheet-meta">Pertemuan 8<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Membedakan properti/method static dari properti/method instance.</li>
+            <li>Menjelaskan mengapa <code>this</code> bisa "hilang" saat method dipakai sebagai callback, dan cara memperbaikinya.</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">static</span>
+            <span class="tag">this binding</span>
+            <span class="tag">Arrow function di class</span>
+            <span class="tag">bind()</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Live coding <code>class Counter</code> dengan static property untuk menghitung total instance yang pernah dibuat. Demo bug klasik: method class dipasang sebagai event handler dan kehilangan <code>this</code>, lalu diperbaiki dengan arrow function atau <code>.bind()</code>.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Latihan mandiri —</strong> Diberi potongan kode dengan bug "this is undefined" di dalam callback — identifikasi penyebabnya dan perbaiki.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">10'</span><span class="l">Review P7</span></div>
+            <div class="time-seg"><span class="m">20'</span><span class="l">Konsep</span></div>
+            <div class="time-seg"><span class="m">45'</span><span class="l">Live coding</span></div>
+            <div class="time-seg"><span class="m">35'</span><span class="l">Latihan</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Refleksi</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p8-nametag-yang-lepas.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 09 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Design Pattern Dasar — Factory &amp; Singleton</h3>
+          <span class="sheet-meta">Pertemuan 9<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Menjelaskan masalah yang diselesaikan oleh Factory pattern dan Singleton pattern.</li>
+            <li>Menerapkan kedua pola tersebut dalam kode JavaScript sederhana.</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">Factory pattern</span>
+            <span class="tag">Singleton pattern</span>
+            <span class="tag">Kapan memakai pattern</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Live coding <code>BentukFactory</code> yang membuat Lingkaran/Persegi/Segitiga berdasarkan parameter tipe, dan <code>Logger</code> sebagai Singleton yang instance-nya hanya dibuat sekali di seluruh aplikasi.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Latihan mandiri —</strong> Buat <code>NotifikasiFactory</code> yang bisa menghasilkan objek <code>Email</code>, <code>SMS</code>, atau <code>PushNotification</code> tergantung tipe yang diminta.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">10'</span><span class="l">Review P8</span></div>
+            <div class="time-seg"><span class="m">20'</span><span class="l">Konsep</span></div>
+            <div class="time-seg"><span class="m">45'</span><span class="l">Live coding</span></div>
+            <div class="time-seg"><span class="m">35'</span><span class="l">Latihan</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Refleksi</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p9-pabrik-dan-kantor-pusat.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="modul-4">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Modul 4 — Proyek Akhir</h2>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 10 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Perencanaan &amp; Desain Proyek</h3>
+          <span class="sheet-meta">Pertemuan 10<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Mengidentifikasi entity dari sebuah kebutuhan dan mengubahnya menjadi rancangan class.</li>
+            <li>Menggambar diagram class sederhana (properti, method, relasi antar class).</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">Analisis kebutuhan</span>
+            <span class="tag">Diagram class sederhana</span>
+            <span class="tag">is-a vs has-a</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Brainstorming pilihan topik proyek: Sistem Manajemen Perpustakaan Sederhana, Aplikasi To-Do List, atau Game Kuis Sederhana. Siswa (individu atau kelompok kecil) menyusun daftar class, properti, method, dan relasi antar class di atas kertas atau tools sederhana.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Deliverable —</strong> Dokumen rancangan singkat: daftar class yang akan dibuat beserta properti, method, dan hubungan antar class-nya.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">15'</span><span class="l">Review Modul 3</span></div>
+            <div class="time-seg"><span class="m">20'</span><span class="l">Contoh diagram</span></div>
+            <div class="time-seg"><span class="m">25'</span><span class="l">Pilih topik</span></div>
+            <div class="time-seg"><span class="m">50'</span><span class="l">Menyusun rancangan</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Cek rancangan</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p10-denah-sebelum-membangun.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 11 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Implementasi Proyek</h3>
+          <span class="sheet-meta">Pertemuan 11<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Menerapkan class, encapsulation, inheritance, dan polymorphism sekaligus dalam satu proyek nyata.</li>
+            <li>Melatih kemampuan debugging mandiri dengan bimbingan pengajar.</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">Hands-on coding</span>
+            <span class="tag">Debugging</span>
+            <span class="tag">Checkpoint review</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Sesi coding terbimbing penuh. Pengajar berkeliling memberi konsultasi per siswa/kelompok. Ada dua checkpoint singkat di tengah sesi untuk memastikan progres sesuai rancangan pertemuan sebelumnya.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Deliverable —</strong> Proyek berjalan minimal 70% — class utama sudah dibuat dan bisa di-instantiate serta diuji di console.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">10'</span><span class="l">Briefing</span></div>
+            <div class="time-seg"><span class="m">50'</span><span class="l">Coding sesi 1</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Checkpoint</span></div>
+            <div class="time-seg"><span class="m">40'</span><span class="l">Coding sesi 2</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Rangkum progres</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p11-waktunya-membangun.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <span class="sheet-tab">SHEET 12 / 12</span>
+      <div class="sheet-inner">
+        <div class="sheet-head">
+          <h3 class="sheet-title">Presentasi, Code Review &amp; Evaluasi Akhir</h3>
+          <span class="sheet-meta">Pertemuan 12<br>120 menit</span>
+        </div>
+        <div class="sheet-block">
+          <h4>Tujuan Pembelajaran</h4>
+          <ul>
+            <li>Menjelaskan keputusan desain OOP pada proyek sendiri secara lisan.</li>
+            <li>Memberi dan menerima feedback konstruktif dari code review.</li>
+            <li>Merefleksikan pemahaman terhadap empat pilar OOP secara keseluruhan.</li>
+          </ul>
+        </div>
+        <div class="sheet-block">
+          <h4>Materi Pokok</h4>
+          <div class="tag-row">
+            <span class="tag">Presentasi proyek</span>
+            <span class="tag">Code review</span>
+            <span class="tag">Refleksi &amp; kuis akhir</span>
+          </div>
+        </div>
+        <div class="sheet-block">
+          <h4>Aktivitas Kelas</h4>
+          <p>Tiap siswa/kelompok presentasi 5–10 menit: apa yang dibangun, class apa saja yang dibuat, dan pilar OOP mana yang dipakai di bagian mana. Dilanjutkan sesi tanya jawab dan code review singkat oleh pengajar dan teman sekelas.</p>
+        </div>
+        <div class="sheet-block">
+          <h4>Latihan / Tugas</h4>
+          <div class="exercise-box"><strong>Evaluasi akhir —</strong> Kuis lisan/tulis singkat: siswa menjelaskan salah satu pilar OOP memakai contoh dari proyek mereka sendiri.</div>
+        </div>
+        <div class="sheet-block">
+          <h4>Estimasi Waktu</h4>
+          <div class="time-row">
+            <div class="time-seg"><span class="m">70'</span><span class="l">Presentasi kelompok</span></div>
+            <div class="time-seg"><span class="m">25'</span><span class="l">Code review</span></div>
+            <div class="time-seg"><span class="m">15'</span><span class="l">Kuis refleksi</span></div>
+            <div class="time-seg"><span class="m">10'</span><span class="l">Penutupan kelas</span></div>
+          </div>
+        </div>
+        <a class="detail-link" href="p12-garis-finish.html">Buka materi interaktif →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="assessment">
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Komponen Penilaian</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="assess-table">
+        <thead>
+          <tr><th>Komponen</th><th>Kapan Dinilai</th><th>Bobot</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Latihan tiap pertemuan</td><td>Pertemuan 1–9</td><td class="num">30%</td></tr>
+          <tr><td>Keaktifan &amp; diskusi kelas</td><td>Sepanjang kelas</td><td class="num">10%</td></tr>
+          <tr><td>Proyek akhir (implementasi)</td><td>Pertemuan 10–11</td><td class="num">40%</td></tr>
+          <tr><td>Presentasi &amp; pemahaman konsep</td><td>Pertemuan 12</td><td class="num">20%</td></tr>
+          <tr><td>Total</td><td></td><td class="num">100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="notes">
+    <div class="section-head">
+      <span class="section-num">07</span>
+      <h2 class="section-title">Catatan untuk Pengajar</h2>
+    </div>
+    <div class="note-grid">
+      <div class="note-card">
+        <h3>Tips Mengajar Pemula</h3>
+        <ul>
+          <li>Pakai analogi dunia nyata secara konsisten — class sebagai cetak biru rumah, object sebagai rumah yang sudah dibangun — dan pakai ulang analogi ini setiap kali konsep baru muncul.</li>
+          <li>Selalu mulai dari kode procedural yang familiar, baru direfactor jadi OOP — jangan langsung memulai dari sintaks class kosong.</li>
+          <li>Setiap pilar OOP diajarkan lewat masalah nyata dulu (kode berantakan, duplikasi, bug), baru solusinya.</li>
+          <li>Sediakan waktu checkpoint di tiap sesi agar siswa yang tertinggal bisa ketahuan lebih awal, bukan di pertemuan proyek.</li>
+        </ul>
+      </div>
+      <div class="note-card">
+        <h3>Referensi Belajar</h3>
+        <ul>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes" target="_blank" rel="noopener">MDN — Using Classes</a></li>
+          <li><a href="https://javascript.info/classes" target="_blank" rel="noopener">javascript.info — Classes</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank" rel="noopener">MDN — Private Class Properties</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Blueprint OOP — Kerangka Ajar</span>
+    <span>JavaScript · 12 Pertemuan · Kelas Pemula</span>
+  </footer>
+  <div class="credit"><a href="https://boflyeta.github.io/" target="_blank" rel="noopener" title="Bofly Eta — Software Engineer">made by boflyeta.dev</a></div>
+
+</div>
+
+</body>
+</html>

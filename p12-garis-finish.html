@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garis Finish</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF3F1;
+    --surface: #FFFFFF;
+    --surface-2: #E3ECE9;
+    --ink: #142430;
+    --ink-soft: #46606B;
+    --ink-faint: #7C939B;
+    --line: #C3D2CF;
+    --line-strong: #9DB3AF;
+    --accent: #1E5C97;
+    --accent-ink: #ffffff;
+    --accent-soft: #DDEAF6;
+    --accent-2: #A85A25;
+    --accent-2-soft: #F5E2CD;
+    --success: #2E7D46;
+    --success-soft: #DEEFE1;
+    --danger: #B3402C;
+    --danger-soft: #F6DFDA;
+    --grid-line: rgba(20, 36, 48, 0.05);
+    --shadow: 0 1px 2px rgba(20, 36, 48, 0.06), 0 8px 24px rgba(20, 36, 48, 0.05);
+    --code-bg: #0F2233;
+    --code-ink: #DCE8EF;
+    --code-faint: #7C97A6;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0E2233;
+      --surface: #14304A;
+      --surface-2: #0C2032;
+      --ink: #E9F1F6;
+      --ink-soft: #A9C2D1;
+      --ink-faint: #6E8FA0;
+      --line: #2C5271;
+      --line-strong: #3E6D8F;
+      --accent: #74B4EC;
+      --accent-ink: #0A1926;
+      --accent-soft: rgba(116, 180, 236, 0.14);
+      --accent-2: #E7A15F;
+      --accent-2-soft: rgba(231, 161, 95, 0.14);
+      --success: #6FCF8E;
+      --success-soft: rgba(111, 207, 142, 0.14);
+      --danger: #E98A76;
+      --danger-soft: rgba(233, 138, 118, 0.14);
+      --grid-line: rgba(233, 241, 246, 0.05);
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+      --code-bg: #081521;
+      --code-ink: #DCE8EF;
+      --code-faint: #5E7987;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0E2233;
+    --surface: #14304A;
+    --surface-2: #0C2032;
+    --ink: #E9F1F6;
+    --ink-soft: #A9C2D1;
+    --ink-faint: #6E8FA0;
+    --line: #2C5271;
+    --line-strong: #3E6D8F;
+    --accent: #74B4EC;
+    --accent-ink: #0A1926;
+    --accent-soft: rgba(116, 180, 236, 0.14);
+    --accent-2: #E7A15F;
+    --accent-2-soft: rgba(231, 161, 95, 0.14);
+    --success: #6FCF8E;
+    --success-soft: rgba(111, 207, 142, 0.14);
+    --danger: #E98A76;
+    --danger-soft: rgba(233, 138, 118, 0.14);
+    --grid-line: rgba(233, 241, 246, 0.05);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+    --code-bg: #081521;
+    --code-ink: #DCE8EF;
+    --code-faint: #5E7987;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  a { color: var(--accent); }
+  code { font-family: var(--font-mono); background: var(--surface-2); padding: 1px 5px; border-radius: 3px; font-size: 0.92em; }
+
+  .page { max-width: 820px; margin: 0 auto; padding: 32px 22px 100px; }
+
+  /* ---------- Breadcrumb + progress ---------- */
+  .crumb { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .crumb a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px dotted var(--ink-faint); }
+  .crumb a:hover { color: var(--accent); border-color: var(--accent); }
+  .crumb .now { color: var(--accent); }
+
+  .progress-shell { margin-top: 18px; border: 1px solid var(--line-strong); background: var(--surface); padding: 12px 16px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow); }
+  .progress-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); white-space: nowrap; }
+  .progress-track { flex: 1; height: 8px; background: var(--surface-2); border: 1px solid var(--line); position: relative; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.35s ease; }
+  .progress-count { font-family: var(--font-mono); font-size: 12px; color: var(--accent); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  /* ---------- Header ---------- */
+  header.hero { margin-top: 30px; margin-bottom: 40px; }
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 10px; }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--accent); display: inline-block; }
+  h1.title { font-family: var(--font-display); font-weight: 600; font-size: clamp(32px, 5.4vw, 50px); line-height: 1.06; letter-spacing: -0.01em; margin: 14px 0 12px; text-wrap: balance; }
+  .subtitle { font-size: 16.5px; color: var(--ink-soft); max-width: 62ch; margin: 0; }
+  .meta-row { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); }
+  .meta-row strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Sections ---------- */
+  section { margin-top: 56px; }
+  .section-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .section-num { font-family: var(--font-mono); font-size: 12px; color: var(--accent-ink); background: var(--accent); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  h2.section-title { font-family: var(--font-display); font-weight: 600; font-size: clamp(21px, 3vw, 26px); margin: 0; text-wrap: balance; flex: 1; }
+
+  .mark-done { display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-faint); cursor: pointer; user-select: none; white-space: nowrap; }
+  .mark-done input { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+  .mark-done.is-done { color: var(--success); }
+
+  .prose { font-size: 15.5px; color: var(--ink); max-width: 68ch; }
+  .prose p { margin: 0 0 14px; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { color: var(--ink); }
+
+  .callout { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 14px 16px; margin: 18px 0; font-size: 14.5px; max-width: 68ch; }
+  .callout strong { color: var(--accent); }
+  .callout.warn { background: var(--accent-2-soft); border-left-color: var(--accent-2); }
+  .callout.warn strong { color: var(--accent-2); }
+
+  /* ---------- Tabs ---------- */
+  .tabs { border: 1px solid var(--line-strong); background: var(--surface); box-shadow: var(--shadow); margin-top: 20px; }
+  .tab-bar { display: flex; border-bottom: 1px solid var(--line-strong); }
+  .tab-btn { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.04em; text-transform: uppercase; background: var(--surface-2); color: var(--ink-faint); border: none; border-right: 1px solid var(--line); padding: 12px 18px; cursor: pointer; flex: 1; }
+  .tab-btn.active { background: var(--surface); color: var(--accent); font-weight: 600; }
+  .tab-panel { display: none; padding: 20px; }
+  .tab-panel.active { display: block; }
+  .tab-note { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 14px; }
+  .tab-note strong { color: var(--accent-2); }
+
+  /* ---------- Code blocks + playground ---------- */
+  .code-box { background: var(--code-bg); color: var(--code-ink); font-family: var(--font-mono); font-size: 13px; line-height: 1.6; padding: 16px 18px; overflow-x: auto; white-space: pre; }
+
+  .runner { margin-top: 20px; border: 1px solid var(--line-strong); background: var(--surface); box-shadow: var(--shadow); }
+  .runner-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
+  .runner-head span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
+  .run-btn { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.03em; background: var(--accent); color: var(--accent-ink); border: none; padding: 8px 16px; cursor: pointer; }
+  .run-btn:hover { filter: brightness(1.08); }
+  .run-btn:active { transform: translateY(1px); }
+
+  textarea.code-editor { width: 100%; min-height: 240px; background: var(--code-bg); color: var(--code-ink); font-family: var(--font-mono); font-size: 13px; line-height: 1.6; border: none; padding: 16px 18px; resize: vertical; display: block; }
+  textarea.code-editor:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  .output-panel { border-top: 1px solid var(--line); background: var(--surface); padding: 12px 18px; font-family: var(--font-mono); font-size: 13px; min-height: 46px; max-height: 220px; overflow-y: auto; }
+  .output-placeholder { color: var(--ink-faint); font-style: italic; }
+  .out-line { padding: 2px 0; color: var(--ink); }
+  .out-error { color: var(--danger); }
+  .out-warn { color: var(--accent-2); }
+
+  .reveal-btn { font-family: var(--font-mono); font-size: 12px; color: var(--accent); background: none; border: 1px solid var(--accent); padding: 8px 14px; cursor: pointer; margin-top: 16px; }
+  .reveal-btn:hover { background: var(--accent-soft); }
+  .answer-box { display: none; margin-top: 14px; }
+  .answer-box.open { display: block; }
+
+  /* ---------- Quiz ---------- */
+  .quiz { display: flex; flex-direction: column; gap: 24px; margin-top: 20px; }
+  .quiz-card { background: var(--surface); border: 1px solid var(--line-strong); box-shadow: var(--shadow); padding: 20px; }
+  .quiz-q { font-family: var(--font-display); font-size: 16.5px; font-weight: 600; margin: 0 0 14px; text-wrap: balance; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt { text-align: left; font-family: var(--font-body); font-size: 14px; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); padding: 11px 14px; cursor: pointer; }
+  .quiz-opt:hover { border-color: var(--accent); }
+  .quiz-opt.correct { background: var(--success-soft); border-color: var(--success); color: var(--success); font-weight: 600; }
+  .quiz-opt.incorrect { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
+  .quiz-opt[disabled] { cursor: default; }
+  .quiz-explain { margin-top: 12px; font-size: 13.5px; padding: 10px 12px; border-left: 3px solid var(--accent); background: var(--accent-soft); display: none; }
+  .quiz-explain.show { display: block; }
+  .quiz-explain.ok { border-color: var(--success); background: var(--success-soft); }
+  .quiz-score { margin-top: 4px; text-align: center; font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); border: 1px dashed var(--line-strong); padding: 12px; }
+  .quiz-score strong { color: var(--accent); font-size: 15px; }
+
+  /* ---------- Recap / nav ---------- */
+  .recap-box { background: var(--surface); border: 1px solid var(--line-strong); box-shadow: var(--shadow); padding: 22px 24px; margin-top: 20px; }
+  .recap-box ul { margin: 0; padding-left: 18px; }
+  .recap-box li { font-size: 14.5px; margin-bottom: 8px; }
+  .recap-box li:last-child { margin-bottom: 0; }
+
+  .next-box { margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; background: var(--accent-2-soft); border-left: 3px solid var(--accent-2); padding: 16px 18px; }
+  .next-box .lbl { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-2); margin-bottom: 4px; }
+  .next-box p { margin: 0; font-size: 14.5px; }
+
+  .nav-links { display: flex; justify-content: space-between; gap: 16px; margin-top: 60px; flex-wrap: wrap; }
+  .nav-link { flex: 1; min-width: 220px; border: 1px solid var(--line-strong); background: var(--surface); padding: 14px 18px; text-decoration: none; color: var(--ink); box-shadow: var(--shadow); }
+  .nav-link .lbl { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 4px; display: block; }
+  .nav-link .ttl { font-family: var(--font-display); font-weight: 600; font-size: 16px; }
+  .nav-link:hover { border-color: var(--accent); }
+  .nav-link.next { text-align: right; }
+
+  footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  .credit { margin-top: 14px; text-align: center; font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); }
+  .credit a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px dotted var(--ink-faint); }
+  .credit a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---------- Page-specific: review checklist + completion box ---------- */
+  .review-checklist { background: var(--surface); border: 1px solid var(--line-strong); box-shadow: var(--shadow); padding: 20px 22px; margin-top: 20px; }
+  .review-checklist h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; margin: 0 0 14px; }
+  .review-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14.5px; }
+  .review-item:first-of-type { border-top: none; }
+  .review-item input { accent-color: var(--accent); width: 16px; height: 16px; margin-top: 3px; flex-shrink: 0; cursor: pointer; }
+  .review-item label { cursor: pointer; }
+  .review-item.checked label { color: var(--ink-faint); text-decoration: line-through; }
+  .review-tally { margin-top: 14px; text-align: right; font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); }
+  .review-tally strong { color: var(--accent); }
+
+  .present-list { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .present-list li { display: flex; gap: 14px; background: var(--surface); border: 1px solid var(--line-strong); box-shadow: var(--shadow); padding: 16px 18px; align-items: flex-start; }
+  .present-num { font-family: var(--font-mono); font-weight: 600; font-size: 15px; color: var(--accent-ink); background: var(--accent); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .present-list p { margin: 0; font-size: 14.5px; }
+  .present-list strong { display: block; font-family: var(--font-display); font-size: 15.5px; margin-bottom: 3px; }
+
+  .finish-box { margin-top: 16px; background: var(--success-soft); border-left: 3px solid var(--success); padding: 20px 22px; }
+  .finish-box .lbl { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--success); margin-bottom: 6px; }
+  .finish-box p { margin: 0; font-size: 15px; }
+</style>
+</head>
+<body>
+
+
+<div class="page">
+
+  <nav class="crumb">
+    <a href="index.html">Blueprint OOP</a>
+    <span>/</span><span>Modul 4</span><span>/</span><span class="now">Pertemuan 12</span>
+  </nav>
+
+  <div class="progress-shell">
+    <span class="progress-label">Progres sesi</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-count" id="progressCount">0 / 4</span>
+  </div>
+
+  <header class="hero">
+    <div class="eyebrow">Sheet 12 &middot; Materi Detail</div>
+    <h1 class="title">Garis Finish</h1>
+    <p class="subtitle">Sesi terakhir nih — belajar cara review kode kayak seorang profesional, gimana cara presentasiin proyek, dan satu kuis besar yang ngerangkum seluruh perjalanan dari Pertemuan 1.</p>
+    <div class="meta-row">
+      <span><strong>Durasi:</strong> 120 menit</span>
+      <span><strong>Prasyarat:</strong> Pertemuan 11 (Implementasi Proyek)</span>
+      <span><strong>Bahasa:</strong> JavaScript (ES6+)</span>
+    </div>
+  </header>
+
+  <!-- SECTION 1 -->
+  <section id="s1">
+    <div class="section-head">
+      <span class="section-num">1</span>
+      <h2 class="section-title">Kenapa Code Review Itu Penting</h2>
+      <label class="mark-done" data-progress-item="0"><input type="checkbox"> Sudah paham</label>
+    </div>
+    <div class="prose">
+      <p>Coba bayangin kamu abis nulis tulisan panjang — tugas, artikel, apa aja — terus mau langsung dikirim tanpa dibaca ulang sama orang lain. Padahal biasanya, begitu ada teman yang baca draftnya, dia bisa nemu typo atau lubang logika yang kamu sendiri udah kelewat lihat. Bukan karena kamu ceroboh, tapi karena kamu udah kelamaan mantengin tulisan itu sendiri — matamu udah "terbiasa" sama kesalahannya sampai nggak keliatan lagi.</p>
+      <p>Code review kerjanya persis gitu. Sebelum kode "dikirim" — dipakai orang lain, digabung ke proyek utama, atau di-submit sebagai tugas — ada baiknya orang lain (atau bahkan dirimu sendiri, dengan mata yang lebih segar) baca dulu dan nyari hal-hal yang mungkin kelewat.</p>
+      <p>Di dunia kerja beneran, ini bukan basa-basi — hampir semua kode yang ditulis programmer di sebuah tim itu <strong>wajib direview</strong> orang lain dulu sebelum digabung ke proyek utama. Bukan karena nggak percaya, tapi karena review itu jaring pengaman kedua yang nangkep hal-hal yang mungkin kelewat sama penulisnya sendiri.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: CHECKLIST -->
+  <section id="s2">
+    <div class="section-head">
+      <span class="section-num">2</span>
+      <h2 class="section-title">Checklist Sebelum Kirim Kode</h2>
+      <label class="mark-done" data-progress-item="1"><input type="checkbox"> Sudah paham</label>
+    </div>
+    <div class="prose">
+      <p>Sebelum ngirim atau nge-submit kode, coba jalanin lima pertanyaan reflektif ini ke proyekmu sendiri. Ini bukan bagian dari progres sesi di atas — cuma checklist kecil buat latihan mikir kayak reviewer beneran. Coba centangin satu-satu sambil ngebayangin proyekmu sendiri.</p>
+    </div>
+    <div class="review-checklist" id="reviewChecklist">
+      <h3>Checklist Review</h3>
+      <div class="review-item">
+        <input type="checkbox" id="rev0"><label for="rev0">Ada properti penting (misal saldo, password, harga) yang masih publik dan seharusnya private?</label>
+      </div>
+      <div class="review-item">
+        <input type="checkbox" id="rev1"><label for="rev1">Ada method yang ngerjain lebih dari satu hal sekaligus (nama panjang kayak "cetakDanHitungDanKirim")?</label>
+      </div>
+      <div class="review-item">
+        <input type="checkbox" id="rev2"><label for="rev2">Ada kode yang di-copy-paste berkali-kali padahal bisa dijadiin satu method di class/parent class?</label>
+      </div>
+      <div class="review-item">
+        <input type="checkbox" id="rev3"><label for="rev3">Nama variabel dan method udah jelas maksudnya (bukan cuma <code>x</code>, <code>data1</code>, <code>fungsi2</code>)?</label>
+      </div>
+      <div class="review-item">
+        <input type="checkbox" id="rev4"><label for="rev4">Kalau ada validasi data, validasinya ada di setter/method resmi, bukan dipercaya begitu aja dari luar?</label>
+      </div>
+      <div class="review-tally" id="reviewTally">0 / 5 dicentang</div>
+    </div>
+    <div class="callout">Nggak apa-apa kalau jawabannya "iya, masih ada yang bau" — justru itu gunanya checklist ini, biar ketahuan sebelum orang lain yang nemuin.</div>
+  </section>
+
+  <!-- SECTION 3: BEFORE/AFTER -->
+  <section id="s3">
+    <div class="section-head">
+      <span class="section-num">3</span>
+      <h2 class="section-title">Contoh Review: Before / After</h2>
+      <label class="mark-done" data-progress-item="2"><input type="checkbox"> Sudah paham</label>
+    </div>
+    <div class="prose">
+      <p>Sekarang coba liat kode beneran yang "berbau" (dalam istilah review sering disebut <em>code smell</em>), terus gimana hasilnya setelah direview dan direfactor pakai konsep-konsep yang udah kita pelajari sepanjang course ini.</p>
+    </div>
+    <div class="tabs">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="before">Sebelum · Berbau</button>
+        <button class="tab-btn" data-tab="after">Sesudah · Direfactor</button>
+      </div>
+
+      <div class="tab-panel active" data-panel="before">
+        <p class="tab-note">Perhatiin dua masalahnya: <code>gaji</code> publik dan gampang dirusak jadi negatif, terus satu fungsi ngerjain <strong>tiga hal sekaligus</strong> — cetak info, hitung bonus, kirim email.</p>
+        <div class="runner">
+          <div class="runner-head"><span>pegawai-berbau.js</span><button class="run-btn" data-run="r1">Jalankan ▸</button></div>
+          <pre class="code-box" id="src-r1">class Pegawai {
+  constructor(nama, gaji) {
+    this.nama = nama;
+    this.gaji = gaji;
+  }
+}
+const p1 = new Pegawai("Sari", 5000000);
+p1.gaji = -999999999;
+console.log(p1.gaji);
+
+function cetakInfoDanHitungBonusDanKirimEmail(pegawai) {
+  console.log(pegawai.nama);
+  const bonus = pegawai.gaji * 0.1;
+  console.log("bonus:", bonus);
+  console.log("(pura-pura kirim email ke " + pegawai.nama + ")");
+}
+cetakInfoDanHitungBonusDanKirimEmail(p1);</pre>
+          <div class="output-panel" id="out-r1"><span class="output-placeholder">Klik "Jalankan" untuk melihat betapa berantakannya ini.</span></div>
+        </div>
+        <div class="callout warn"><strong>Bau yang ketauan:</strong> <code>gaji</code> nggak punya perlindungan sama sekali, jadi bisa ditimpa jadi angka negatif segede itu tanpa ada yang nyegah. Terus <code>cetakInfoDanHitungBonusDanKirimEmail</code> — dari namanya aja udah ketauan dia ngerjain tiga hal berbeda dalam satu fungsi, yang bikin dia susah dites satu-satu dan susah dipakai ulang cuma sebagiannya aja.</div>
+      </div>
+
+      <div class="tab-panel" data-panel="after">
+        <p class="tab-note"><code>#gaji</code> sekarang private dengan validasi, dan tiap method cuma ngerjain <strong>satu hal</strong> — pola yang udah kita pelajari dari Pertemuan 3 sampai sekarang.</p>
+        <div class="runner">
+          <div class="runner-head"><span>pegawai-rapi.js</span><button class="run-btn" data-run="r2">Jalankan ▸</button></div>
+          <pre class="code-box" id="src-r2">class PegawaiRapi {
+  #gaji;
+  constructor(nama, gaji) {
+    this.nama = nama;
+    this.#gaji = gaji > 0 ? gaji : 0;
+  }
+  get gaji() { return this.#gaji; }
+  hitungBonus() { return this.#gaji * 0.1; }
+  cetakInfo() { console.log(`${this.nama} - gaji: ${this.#gaji}`); }
+  kirimEmail() { console.log(`(pura-pura kirim email ke ${this.nama})`); }
+}
+const p2 = new PegawaiRapi("Sari", 5000000);
+p2.gaji = -999999999;
+console.log(p2.gaji);
+p2.cetakInfo();
+console.log("bonus:", p2.hitungBonus());
+p2.kirimEmail();</pre>
+          <div class="output-panel" id="out-r2"><span class="output-placeholder">Klik "Jalankan" untuk membandingkan hasilnya.</span></div>
+        </div>
+        <div class="callout"><strong>Perhatiin baris <code>p2.gaji = -999999999</code>:</strong> percobaan ini diabaikan diam-diam — persis kayak yang kita pelajari di Pertemuan 3, soalnya <code>#gaji</code> asli udah divalidasi sejak constructor dan cuma diekspos lewat <code>get</code> tanpa <code>set</code>. Terus tiap method sekarang cuma ngerjain satu hal aja (single responsibility) — <code>cetakInfo()</code>, <code>hitungBonus()</code>, dan <code>kirimEmail()</code> masing-masing berdiri sendiri, jadi lebih gampang dites dan dipakai ulang.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: EXERCISE -->
+  <section id="s4">
+    <div class="section-head">
+      <span class="section-num">4</span>
+      <h2 class="section-title">Latihan: Jadi Reviewer, Terus Refactor Sendiri</h2>
+      <label class="mark-done" data-progress-item="3"><input type="checkbox"> Selesai latihan</label>
+    </div>
+    <div class="prose">
+      <p>Sekarang gantian kamu yang jadi reviewer sekaligus yang ngerjain refactor-nya. <code>class Produk</code> di bawah ini masih berbau: properti publik semua, dan method <code>kurangiStok</code> belum ada validasinya. Lengkapi jadi private field + validasi, persis pola yang barusan kita liat.</p>
+    </div>
+    <div class="runner">
+      <div class="runner-head"><span>latihan-produk.js — bisa diedit</span><button class="run-btn" data-run="r3">Jalankan ▸</button></div>
+      <textarea class="code-editor" id="src-r3" spellcheck="false" style="min-height:320px;">class Produk {
+  // TODO: private field #harga dan #stok
+
+  constructor(nama, harga, stok) {
+    // TODO: simpan nama; harga dan stok lewat validasi (jangan boleh negatif)
+  }
+
+  get harga() {
+    // TODO
+  }
+
+  get stok() {
+    // TODO
+  }
+
+  kurangiStok(jumlah) {
+    // TODO: kalau jumlah lebih dari stok, cetak "Gagal: stok tidak cukup" dan jangan diubah
+    // kalau cukup, kurangi stok
+  }
+
+  infoProduk() {
+    // TODO: cetak nama, harga, stok
+  }
+}
+
+const produk = new Produk("Kaos", 75000, 10);
+produk.infoProduk();
+produk.kurangiStok(3);
+produk.infoProduk();
+produk.kurangiStok(100);</textarea>
+      <div class="output-panel" id="out-r3"><span class="output-placeholder">Lengkapi kode lalu klik "Jalankan".</span></div>
+    </div>
+    <button class="reveal-btn" id="revealBtn">Lihat kunci jawaban</button>
+    <div class="answer-box" id="answerBox">
+      <div class="runner">
+        <div class="runner-head"><span>kunci-jawaban.js</span></div>
+        <pre class="code-box">class Produk {
+  #harga;
+  #stok;
+  constructor(nama, harga, stok) {
+    this.nama = nama;
+    this.#harga = harga > 0 ? harga : 0;
+    this.#stok = stok >= 0 ? stok : 0;
+  }
+  get harga() { return this.#harga; }
+  get stok() { return this.#stok; }
+  kurangiStok(jumlah) {
+    if (jumlah > this.#stok) {
+      console.log("Gagal: stok tidak cukup");
+      return;
+    }
+    this.#stok -= jumlah;
+  }
+  infoProduk() {
+    console.log(`${this.nama} - Rp${this.#harga} (stok: ${this.#stok})`);
+  }
+}
+const produk = new Produk("Kaos", 75000, 10);
+produk.infoProduk();
+produk.kurangiStok(3);
+produk.infoProduk();
+produk.kurangiStok(100);</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: PRESENTATION TIPS -->
+  <section id="s5">
+    <div class="section-head">
+      <span class="section-num">5</span>
+      <h2 class="section-title">Cara Presentasiin Proyekmu</h2>
+    </div>
+    <div class="prose">
+      <p>Kode yang bagus itu satu hal, tapi bisa jelasin proyekmu ke orang lain itu skill yang sama pentingnya. Coba ikutin lima langkah ini pas presentasi proyek akhir.</p>
+    </div>
+    <ol class="present-list">
+      <li>
+        <span class="present-num">1</span>
+        <p><strong>Masalah apa yang proyek ini selesaikan</strong><br>Kasih konteks singkat dulu — orang yang dengerin belum tentu tau kenapa proyekmu ini dibutuhkan sebelum kamu jelasin.</p>
+      </li>
+      <li>
+        <span class="present-num">2</span>
+        <p><strong>Struktur class-mu</strong><br>Bisa tunjukin diagram class sederhana kayak yang dibikin di Pertemuan 10 — class apa aja yang ada, dan gimana mereka berhubungan (inheritance, komposisi, dll).</p>
+      </li>
+      <li>
+        <span class="present-num">3</span>
+        <p><strong>Demo singkat</strong><br>Jalanin fitur utama langsung di depan, jangan cuma diceritain. Liat kode jalan itu jauh lebih meyakinkan daripada cuma dibacain.</p>
+      </li>
+      <li>
+        <span class="present-num">4</span>
+        <p><strong>Tantangan yang ditemuin dan gimana cara ngatasinnya</strong><br>Misalnya bug <code>this</code> ilang, lupa <code>new</code>, atau error lain dari Pertemuan 11 — cerita gimana kamu nemuin dan nyelesaininnya justru nunjukin kamu paham, bukan cuma nyontek.</p>
+      </li>
+      <li>
+        <span class="present-num">5</span>
+        <p><strong>Kalau ada waktu lebih, mau dikembangin ke mana lagi</strong><br>Nggak ada proyek yang beneran "selesai total" — nunjukin kamu udah mikirin langkah berikutnya itu nilai plus.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- SECTION 6: FINAL QUIZ -->
+  <section id="s6">
+    <div class="section-head">
+      <span class="section-num">6</span>
+      <h2 class="section-title">Kuis Tantangan Akhir</h2>
+    </div>
+    <div class="prose">
+      <p>Ini kuis paling gede di seluruh course — delapan soal yang ngerangkum perjalanan dari Pertemuan 1 sampai sekarang. Coba inget-inget lagi analogi-analogi yang udah kita pakai sepanjang jalan.</p>
+    </div>
+    <div class="quiz" id="quiz">
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">1. Kapan sebaiknya kita cukup pakai object literal (<code>{ ... }</code>) biasa, dan kapan sebaiknya naik level ke <code>class</code>?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">Object literal cuma buat data angka, class cuma buat data teks</button>
+          <button class="quiz-opt" data-correct="true">Object literal cocok buat satu data yang berdiri sendiri; class cocok kalau kita bakal bikin BANYAK objek dengan struktur dan perilaku yang sama, biar nggak nulis ulang dari nol tiap kali</button>
+          <button class="quiz-opt">Class cuma bisa dipakai kalau ada minimal 5 properti</button>
+          <button class="quiz-opt">Object literal dan class persis sama, tinggal pilih selera aja</button>
+        </div>
+        <div class="quiz-explain">Inget motor "Vario" di Pertemuan 1 — object literal udah cukup buat satu motor. Tapi begitu kita butuh bikin banyak motor dengan pola yang sama, class (cetak biru) jadi jauh lebih masuk akal daripada nulis ulang tiap objek satu-satu.</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">2. Analogi "kotak perkakas yang terkunci" itu ngegambarin pilar OOP yang mana, dan kenapa analoginya pas?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">Inheritance — soalnya kotak perkakas bisa diwariskan ke kotak lain</button>
+          <button class="quiz-opt" data-correct="true">Encapsulation — data penting (kayak #saldo atau #gaji) disembunyikan, dan cuma bisa disentuh lewat "pintu" resmi seperti getter/setter yang udah punya aturan</button>
+          <button class="quiz-opt">Polymorphism — soalnya kotak perkakas bisa dipakai banyak orang</button>
+          <button class="quiz-opt">Abstraction — soalnya kotak perkakas cuma punya satu tombol</button>
+        </div>
+        <div class="quiz-explain">Persis kayak brankas di Pertemuan 3: orang luar nggak bisa ngubek isinya sembarangan, harus lewat method resmi yang udah tervalidasi.</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">3. Di analogi "resep turunan" (resep Kue Dasar diwariskan ke Kue Coklat), apa peran <code>extends</code> dan <code>super()</code>?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">extends menghapus resep dasar supaya diganti total dengan resep baru</button>
+          <button class="quiz-opt" data-correct="true">extends bikin class turunan otomatis mewarisi properti dan method dari class induk, dan super() dipanggil di constructor turunan supaya bagian dari induk tetap ikut dijalankan/diinisialisasi</button>
+          <button class="quiz-opt">super() hanya boleh dipakai kalau class induk tidak punya constructor sama sekali</button>
+          <button class="quiz-opt">extends dan super() cuma bisa dipakai satu kali seumur hidup program</button>
+        </div>
+        <div class="quiz-explain">Sama kayak resep Kue Coklat yang nggak perlu nulis ulang semua langkah dasar bikin adonan — tinggal "warisi" resep dasarnya (extends), lalu jalanin dulu bagian dasarnya (super()) sebelum nambah langkah spesialnya sendiri.</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">4. Kenapa aba-aba balapan ("mulai!") jadi analogi yang pas buat polymorphism?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">Karena semua kendaraan di balapan wajib berhenti bareng-bareng</button>
+          <button class="quiz-opt" data-correct="true">Karena satu aba-aba/perintah yang sama (misalnya satu nama method) dipanggil ke objek yang berbeda-beda, tapi tiap objek merespons dengan caranya sendiri — mobil melaju, motor melaju, sepeda melaju, sama perintahnya beda hasilnya</button>
+          <button class="quiz-opt">Karena hanya ada satu jenis kendaraan yang boleh ikut</button>
+          <button class="quiz-opt">Karena aba-abanya berbeda-beda untuk tiap kendaraan</button>
+        </div>
+        <div class="quiz-explain">Ini juga yang kejadian di Pertemuan 11: array campuran Tugas dan TugasPenting, dipanggil tandaiSelesai() yang sama, tapi hasilnya beda tergantung objeknya.</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">5. Analogi "remote TV" buat abstraction artinya kita cukup pencet tombol power tanpa tau rangkaian di baliknya. Di kode, gimana bentuk konkretnya (misalnya lewat abstract class pattern)?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">Abstraction berarti semua method di class harus dibuat static</button>
+          <button class="quiz-opt" data-correct="true">Class induk bisa mendefinisikan "kontrak" — method yang wajib di-override oleh class turunan — supaya pemakai cukup panggil method itu tanpa perlu tau detail implementasinya, dan kalau ada turunan yang lupa memenuhi kontrak, itu bisa langsung ketauan (bukan diam-diam salah)</button>
+          <button class="quiz-opt">Abstraction berarti kode tidak boleh punya constructor</button>
+          <button class="quiz-opt">Abstraction sama persis dengan encapsulation, cuma beda istilah</button>
+        </div>
+        <div class="quiz-explain">Inget "inspektur bangunan yang nggak pernah dateng" di Pertemuan 7 — abstract class pattern mastiin kontrak (kayak method luas()) wajib dipenuhi, jadi kesalahan nggak diam-diam kelewat.</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">6. Apa beda utama antara properti/method <code>static</code> dengan properti/method biasa (instance), dan kenapa <code>this</code> bisa "kehilangan nametag"-nya?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">static dan this itu sebenarnya konsep yang sama persis</button>
+          <button class="quiz-opt" data-correct="true">static itu milik class-nya sendiri dan dibagi ke semua instance (kayak papan pengumuman pabrik), sedangkan this biasanya nunjuk ke objek yang manggil method — tapi kalau method diambil sebagai referensi polos (tanpa tanda kurung) dan dipanggil terpisah, "nametag" this itu ikut lepas dan jadi tidak jelas nunjuk ke mana</button>
+          <button class="quiz-opt">static hanya bisa dipakai di dalam arrow function</button>
+          <button class="quiz-opt">this selalu menunjuk ke class, tidak pernah menunjuk ke instance</button>
+        </div>
+        <div class="quiz-explain">Dua analogi Pertemuan 8 sekaligus: static = papan pengumuman pabrik (milik pabriknya, bukan satu produk doang), dan this yang lepas = nametag karyawan yang kecopot pas method-nya dipisah dari objeknya.</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">7. Kapan pola Factory lebih masuk akal dipakai dibanding manggil <code>new</code> langsung satu-satu?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">Factory wajib dipakai di setiap program, tanpa kecuali</button>
+          <button class="quiz-opt" data-correct="true">Factory cocok kalau logika "class mana yang harus dibuat" itu cukup ribet atau sering berubah — mirip bagian pemesanan di pabrik yang kamu tinggal bilang "mau lingkaran" tanpa perlu tau lini produksi mana yang ngerjain</button>
+          <button class="quiz-opt">Factory menghapus kebutuhan akan constructor sama sekali</button>
+          <button class="quiz-opt">Factory hanya bisa dipakai untuk class yang extends dari class lain</button>
+        </div>
+        <div class="quiz-explain">Sama kayak Singleton yang mastiin cuma ada satu "kantor pusat" di seluruh aplikasi — keduanya design pattern yang dipakai kalau beneran nyelesain masalah nyata, bukan cuma biar keliatan rapi.</div>
+      </div>
+
+      <div class="quiz-card" data-quiz>
+        <p class="quiz-q">8. Kenapa merencanakan dulu (kayak bikin denah di Pertemuan 10) dan mereview kode sebelum "dikirim" itu sama-sama penting, padahal keduanya bukan proses "ngoding" secara langsung?</p>
+        <div class="quiz-options">
+          <button class="quiz-opt">Karena keduanya cuma formalitas yang tidak benar-benar mempengaruhi hasil akhir</button>
+          <button class="quiz-opt" data-correct="true">Keduanya sama-sama nangkep masalah SEBELUM jadi lebih mahal buat dibenerin — denah nyegah salah bangun struktur dari awal (kayak tukang bangun yang ngecek pondasi dulu), dan review nangkep bau kode atau bug yang kelewat sama penulisnya sendiri sebelum dipakai orang lain</button>
+          <button class="quiz-opt">Karena keduanya wajib dilakukan oleh orang yang berbeda dari yang menulis kode</button>
+          <button class="quiz-opt">Karena kode yang direncanakan otomatis berjalan lebih cepat</button>
+        </div>
+        <div class="quiz-explain">Ini benang merah dari Pertemuan 10, 11, dan 12: denah sebelum membangun, bangun bertahap per checkpoint, lalu review sebelum dianggap selesai — tiga tahap yang saling melengkapi, bukan langkah yang bisa dilewatin.</div>
+      </div>
+
+    </div>
+    <div class="quiz-score" id="quizScore">Skor: <strong>0 / 8</strong> terjawab benar</div>
+  </section>
+
+  <!-- SECTION 7: RECAP + COMPLETION -->
+  <section id="s7">
+    <div class="section-head">
+      <span class="section-num">7</span>
+      <h2 class="section-title">Ringkasan Pertemuan 12</h2>
+    </div>
+    <div class="recap-box">
+      <ul>
+        <li><strong>Code review</strong> itu jaring pengaman kedua — kayak minta teman baca draft tulisanmu sebelum dikirim, dia bisa nemu hal yang udah kelewat kamu lihat sendiri.</li>
+        <li>Checklist review yang paling sering dipakai: properti publik yang seharusnya private, method yang ngerjain lebih dari satu hal, kode yang di-copy-paste, penamaan yang nggak jelas, dan validasi yang bocor.</li>
+        <li>Refactor <code>Pegawai</code> jadi <code>PegawaiRapi</code> nunjukin gimana private field + validasi + single responsibility bikin kode jauh lebih aman dan gampang dites.</li>
+        <li>Presentasi proyek yang baik nyeritain masalah, struktur, demo, tantangan, dan rencana ke depan — bukan cuma mbacain kode baris per baris.</li>
+        <li>Dan yang paling penting: perjalanan kita dari <strong>object literal</strong> di Pertemuan 1 sampai <strong>design pattern</strong> di Pertemuan 9, dari nulis kode asal sampai belajar <strong>merencanakan</strong> (Pertemuan 10), <strong>membangun bertahap</strong> (Pertemuan 11), dan <strong>mereview kode kayak profesional</strong> (Pertemuan 12) — itu semua satu paket keterampilan yang saling ngedukung.</li>
+      </ul>
+    </div>
+    <div class="finish-box">
+      <div class="lbl">Selesai!</div>
+      <p>🎉 Selamat! Kamu udah nyelesain semua 12 pertemuan Blueprint OOP — dari objek pertama sampai proyek jadi. Mau ngulang materi manapun atau lihat peta lengkapnya? Balik ke halaman utama di bawah.</p>
+    </div>
+  </section>
+
+  <div class="nav-links">
+    <a class="nav-link prev" href="p11-waktunya-membangun.html">
+      <span class="lbl">← Sebelumnya</span>
+      <span class="ttl">Pertemuan 11 — Waktunya Membangun</span>
+    </a>
+    <a class="nav-link next" href="index.html">
+      <span class="lbl">Peta Kurikulum →</span>
+      <span class="ttl">Kembali ke Peta Kurikulum</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>Blueprint OOP — Pertemuan 12</span>
+    <span>Garis Finish</span>
+  </footer>
+  <div class="credit"><a href="https://boflyeta.github.io/" target="_blank" rel="noopener" title="Bofly Eta — Software Engineer">made by boflyeta.dev</a></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Sandbox code runner ---------- */
+  function runCode(code, outputEl) {
+    outputEl.innerHTML = "";
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("sandbox", "allow-scripts");
+    iframe.style.display = "none";
+    document.body.appendChild(iframe);
+
+    function cleanup() {
+      window.removeEventListener("message", handler);
+      setTimeout(function () { if (iframe.parentNode) iframe.parentNode.removeChild(iframe); }, 50);
+    }
+
+    function handler(e) {
+      if (!e.data || e.data.__sandbox !== true || e.source !== iframe.contentWindow) return;
+      var line = document.createElement("div");
+      line.className = "out-line" + (e.data.type === "error" ? " out-error" : e.data.type === "warn" ? " out-warn" : "");
+      line.textContent = e.data.args.join(" ");
+      outputEl.appendChild(line);
+    }
+    window.addEventListener("message", handler);
+
+    var payload = JSON.stringify(String(code));
+    var html = "<script>" +
+      "var __code = " + payload + ";" +
+      "function __send(type, args) { try { parent.postMessage({ __sandbox: true, type: type, args: args.map(function(a){ try { return (typeof a === 'object' && a !== null) ? JSON.stringify(a) : String(a); } catch(e){ return String(a); } }) }, '*'); } catch(e) {} }" +
+      "console.log = function(){ __send('log', Array.prototype.slice.call(arguments)); };" +
+      "console.error = function(){ __send('error', Array.prototype.slice.call(arguments)); };" +
+      "console.warn = function(){ __send('warn', Array.prototype.slice.call(arguments)); };" +
+      "try { (0, eval)(__code); } catch (err) { __send('error', [err.message]); }" +
+      "<\/script>";
+    iframe.srcdoc = html;
+    setTimeout(cleanup, 700);
+  }
+
+  document.querySelectorAll("[data-run]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var id = btn.getAttribute("data-run");
+      var srcEl = document.getElementById("src-" + id);
+      var outEl = document.getElementById("out-" + id);
+      var code = (srcEl.tagName === "TEXTAREA") ? srcEl.value : srcEl.textContent;
+      runCode(code, outEl);
+    });
+  });
+
+  /* ---------- Tabs ---------- */
+  document.querySelectorAll(".tab-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var tabs = btn.closest(".tabs");
+      tabs.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
+      tabs.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("active"); });
+      btn.classList.add("active");
+      tabs.querySelector('[data-panel="' + btn.getAttribute("data-tab") + '"]').classList.add("active");
+    });
+  });
+
+  /* ---------- Reveal answer (bisa lebih dari satu di halaman) ---------- */
+  document.querySelectorAll(".reveal-btn").forEach(function (revealBtn) {
+    var answerBox = revealBtn.nextElementSibling;
+    revealBtn.addEventListener("click", function () {
+      var open = answerBox.classList.toggle("open");
+      revealBtn.textContent = open ? "Sembunyikan kunci jawaban" : "Lihat kunci jawaban";
+    });
+  });
+
+  /* ---------- Quiz ---------- */
+  var correctCount = 0;
+  var totalQuiz = document.querySelectorAll("[data-quiz]").length;
+  document.querySelectorAll("[data-quiz]").forEach(function (card) {
+    var answered = false;
+    var explain = card.querySelector(".quiz-explain");
+    card.querySelectorAll(".quiz-opt").forEach(function (opt) {
+      opt.addEventListener("click", function () {
+        if (answered) return;
+        answered = true;
+        var isCorrect = opt.getAttribute("data-correct") === "true";
+        card.querySelectorAll(".quiz-opt").forEach(function (o) { o.disabled = true; });
+        if (isCorrect) {
+          opt.classList.add("correct");
+          explain.classList.add("ok");
+          correctCount++;
+        } else {
+          opt.classList.add("incorrect");
+          var correctOpt = card.querySelector('[data-correct="true"]');
+          if (correctOpt) correctOpt.classList.add("correct");
+        }
+        explain.classList.add("show");
+        var scoreEl = document.getElementById("quizScore");
+        scoreEl.innerHTML = "Skor: <strong>" + correctCount + " / " + totalQuiz + "</strong> terjawab benar";
+      });
+    });
+  });
+
+  /* ---------- Review checklist (independent, not tied to main progress) ---------- */
+  var reviewBoxes = document.querySelectorAll("#reviewChecklist .review-item input");
+  function updateReviewTally() {
+    var done = 0;
+    reviewBoxes.forEach(function (cb) { if (cb.checked) done++; });
+    document.getElementById("reviewTally").innerHTML = done + " / " + reviewBoxes.length + " dicentang";
+  }
+  reviewBoxes.forEach(function (cb) {
+    cb.addEventListener("change", function () {
+      cb.closest(".review-item").classList.toggle("checked", cb.checked);
+      updateReviewTally();
+    });
+  });
+  updateReviewTally();
+
+  /* ---------- Progress checklist (localStorage, per-viewer) ---------- */
+  var STORAGE_KEY = "blueprint-oop-p12-progress";
+  var checkboxes = document.querySelectorAll("[data-progress-item] input");
+
+  function loadProgress() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+  function saveProgress(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function updateBar() {
+    var done = 0;
+    checkboxes.forEach(function (cb) { if (cb.checked) done++; });
+    var pct = Math.round((done / checkboxes.length) * 100);
+    document.getElementById("progressFill").style.width = pct + "%";
+    document.getElementById("progressCount").textContent = done + " / " + checkboxes.length;
+  }
+
+  var state = loadProgress();
+  checkboxes.forEach(function (cb) {
+    var key = cb.closest("[data-progress-item]").getAttribute("data-progress-item");
+    if (state[key]) {
+      cb.checked = true;
+      cb.closest(".mark-done").classList.add("is-done");
+    }
+    cb.addEventListener("change", function () {
+      var st = loadProgress();
+      st[key] = cb.checked;
+      saveProgress(st);
+      cb.closest(".mark-done").classList.toggle("is-done", cb.checked);
+      updateBar();
+    });
+  });
+  updateBar();
+})();
+</script>
+
+</body>
+</html>
